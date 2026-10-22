@@ -1,0 +1,11 @@
+.env
+.env.*
+
+# Compiled binaries
+chat_service
+main
+chat
+*.log
+*.out
+*.exe
+*.test

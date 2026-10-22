@@ -1,0 +1,17 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Build artifacts
+*.exe
+*.test
+*.prof
+
+# Project planning & assistant files
+antigravity/
+.antigravity/

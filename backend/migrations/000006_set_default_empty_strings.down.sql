@@ -1,0 +1,15 @@
+ALTER TABLE users 
+    ALTER COLUMN bio DROP DEFAULT,
+    ALTER COLUMN bio DROP NOT NULL,
+    ALTER COLUMN first_name DROP DEFAULT,
+    ALTER COLUMN first_name DROP NOT NULL,
+    ALTER COLUMN last_name DROP DEFAULT,
+    ALTER COLUMN last_name DROP NOT NULL;
+
+ALTER TABLE networks 
+    ALTER COLUMN description DROP DEFAULT,
+    ALTER COLUMN description DROP NOT NULL;
+
+ALTER TABLE auth_identities 
+    ALTER COLUMN password_hash DROP DEFAULT,
+    ALTER COLUMN password_hash DROP NOT NULL;

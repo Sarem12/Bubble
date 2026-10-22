@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+.env.*
+uploads
+*.log
+*.out
+api
+main
+faker
+backend
+

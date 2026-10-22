@@ -1,0 +1,2 @@
+ALTER TABLE sessions ADD COLUMN fcm_token TEXT;
+ALTER TABLE sessions ADD COLUMN is_revoked BOOLEAN DEFAULT FALSE;

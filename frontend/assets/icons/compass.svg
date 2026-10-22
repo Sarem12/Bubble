@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <circle fill="#e6e7e8" stroke="#58595b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" cx="11" cy="11" r="10"/>
+      <path fill="#be1e2d" stroke="#be1e2d" stroke-linecap="round" stroke-linejoin="round" d="M13.03,12.86c-.22.26-.52.46-.86.57l-5.41,1.81,1.81-5.41c.09-.29.25-.55.46-.76l4,3.79Z"/>
+      <g>
+        <path fill="#2e3192" stroke-width="0" d="M15.24,6.76l-1.8,5.41c-.09.26-.22.49-.41.69l-4-3.79c.21-.23.49-.41.8-.51l5.41-1.8Z"/>
+        <path fill="none" stroke="#2e3192" stroke-linecap="round" stroke-linejoin="round" d="M15.24,6.76l-1.8,5.41c-.09.26-.22.49-.41.69l-4-3.79c.21-.23.49-.41.8-.51l5.41-1.8Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

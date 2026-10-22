@@ -1,0 +1,1 @@
+DROP INDEX unique_person_network_per_user;

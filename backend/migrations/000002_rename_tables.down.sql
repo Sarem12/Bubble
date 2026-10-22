@@ -1,0 +1,1 @@
+ALTER TABLE networks RENAME TO bubbles;

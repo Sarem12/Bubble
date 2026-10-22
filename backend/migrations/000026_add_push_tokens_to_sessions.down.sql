@@ -1,0 +1,2 @@
+ALTER TABLE sessions DROP COLUMN IF EXISTS fcm_token;
+ALTER TABLE sessions DROP COLUMN IF EXISTS is_revoked;

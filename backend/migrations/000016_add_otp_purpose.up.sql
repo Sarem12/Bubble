@@ -1,0 +1,1 @@
+ALTER TABLE otp_codes ADD COLUMN purpose VARCHAR(20) NOT NULL DEFAULT 'register';

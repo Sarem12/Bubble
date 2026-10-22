@@ -1,0 +1,15 @@
+.env
+.env.*
+uploads/
+fiber_collection.json
+firebase.json
+
+# Compiled binaries
+api
+main
+faker
+backend
+*.log
+*.out
+*.exe
+*.test

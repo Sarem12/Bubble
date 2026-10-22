@@ -1,0 +1,2 @@
+ALTER TABLE networks ALTER COLUMN name DROP NOT NULL;
+UPDATE networks SET name = NULL WHERE type = 'PERSON';

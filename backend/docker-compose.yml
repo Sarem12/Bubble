@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bubble_postgres
+    environment:
+      POSTGRES_USER: bubble_user
+      POSTGRES_PASSWORD: bubble_password
+      POSTGRES_DB: bubble_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bubble_network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bubble_api
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=bubble_user
+      - DB_PASSWORD=bubble_password
+      - DB_NAME=bubble_db
+    depends_on:
+      - postgres
+    networks:
+      - bubble_network
+
+volumes:
+  postgres_data:
+
+networks:
+  bubble_network:
+    driver: bridge

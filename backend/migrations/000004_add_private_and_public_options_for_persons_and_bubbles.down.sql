@@ -1,0 +1,7 @@
+ALTER TABLE users
+DROP COLUMN type,
+DROP CONSTRAINT IF EXISTS valid_user_type;
+
+ALTER TABLE networks
+DROP COLUMN type,
+DROP CONSTRAINT IF EXISTS valid_network_type;

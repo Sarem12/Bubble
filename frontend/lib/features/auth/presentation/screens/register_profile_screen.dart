@@ -12,7 +12,8 @@ class RegisterProfileScreen extends ConsumerStatefulWidget {
   const RegisterProfileScreen({super.key});
 
   @override
-  ConsumerState<RegisterProfileScreen> createState() => _RegisterProfileScreenState();
+  ConsumerState<RegisterProfileScreen> createState() =>
+      _RegisterProfileScreenState();
 }
 
 class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
@@ -20,7 +21,7 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   DateTime? _selectedBirthday;
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -54,24 +55,33 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
     final password = _passwordController.text;
 
     // FRONTEND VALIDATION
-    if (firstName.isEmpty || lastName.isEmpty || username.isEmpty || password.isEmpty) {
+    if (firstName.isEmpty ||
+        lastName.isEmpty ||
+        username.isEmpty ||
+        password.isEmpty) {
       UiHelpers.showError(context, "All fields are required.");
       return;
     }
-    
+
     if (_selectedBirthday == null) {
       UiHelpers.showError(context, "Please select your birthday.");
       return;
     }
 
-    if (password.length < 3) {
-      UiHelpers.showError(context, "Password must be at least 3 characters long.");
+    if (password.length < 10) {
+      UiHelpers.showError(
+        context,
+        "Password must be at least 10 characters long.",
+      );
       return;
     }
 
     final cleanUsername = username.replaceAll('@', '').toLowerCase();
     if (!RegExp(r'^[a-z0-9_]+$').hasMatch(cleanUsername)) {
-      UiHelpers.showError(context, "Username can only contain lowercase letters, numbers, and underscores.");
+      UiHelpers.showError(
+        context,
+        "Username can only contain lowercase letters, numbers, and underscores.",
+      );
       return;
     }
 
@@ -79,16 +89,20 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
     setState(() => _isLoading = true);
 
     // Format strictly as YYYY-MM-DD for backend time.Parse("2006-01-02")
-    final birthdayFormatted = DateFormat('yyyy-MM-dd').format(_selectedBirthday!);
+    final birthdayFormatted = DateFormat(
+      'yyyy-MM-dd',
+    ).format(_selectedBirthday!);
 
-    final errorMsg = await ref.read(authControllerProvider.notifier).register(
-      username: cleanUsername,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      birthday: birthdayFormatted,
-    );
-    
+    final errorMsg = await ref
+        .read(authControllerProvider.notifier)
+        .register(
+          username: cleanUsername,
+          firstName: firstName,
+          lastName: lastName,
+          password: password,
+          birthday: birthdayFormatted,
+        );
+
     if (mounted) {
       setState(() => _isLoading = false);
       if (errorMsg == null) {
@@ -119,7 +133,9 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
               height: 260,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFEC4899).withValues(alpha: isDark ? 0.20 : 0.25),
+                color: const Color(
+                  0xFFEC4899,
+                ).withValues(alpha: isDark ? 0.20 : 0.25),
               ),
             ),
           ),
@@ -131,7 +147,9 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
               height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF8B5CF6).withValues(alpha: isDark ? 0.18 : 0.22),
+                color: const Color(
+                  0xFF8B5CF6,
+                ).withValues(alpha: isDark ? 0.18 : 0.22),
               ),
             ),
           ),
@@ -153,7 +171,9 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                   width: 64,
                   height: 64,
                   decoration: BoxDecoration(
-                    gradient: LiquidGlassTheme.primaryLiquidGradient(context: context),
+                    gradient: LiquidGlassTheme.primaryLiquidGradient(
+                      context: context,
+                    ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -190,7 +210,10 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                 // Names Group
                 LiquidGlassContainer(
                   borderRadius: BorderRadius.circular(24),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   child: Column(
                     children: [
                       TextField(
@@ -199,16 +222,22 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                           labelText: 'First Name',
                           labelStyle: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.75),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.75),
                           ),
-                          prefixIcon: const Icon(PhosphorIconsRegular.identificationBadge, size: 20),
+                          prefixIcon: const Icon(
+                            PhosphorIconsRegular.identificationBadge,
+                            size: 20,
+                          ),
                           border: InputBorder.none,
                         ),
                       ),
                       Divider(
                         height: 12,
                         thickness: 0.8,
-                        color: isDark ? Colors.white.withValues(alpha: 0.10) : Colors.black.withValues(alpha: 0.08),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.10)
+                            : Colors.black.withValues(alpha: 0.08),
                       ),
                       TextField(
                         controller: _lastNameController,
@@ -216,9 +245,13 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                           labelText: 'Last Name',
                           labelStyle: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.75),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.75),
                           ),
-                          prefixIcon: const Icon(PhosphorIconsRegular.identificationBadge, size: 20),
+                          prefixIcon: const Icon(
+                            PhosphorIconsRegular.identificationBadge,
+                            size: 20,
+                          ),
                           border: InputBorder.none,
                         ),
                       ),
@@ -231,7 +264,10 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                 // Account Credentials Group
                 LiquidGlassContainer(
                   borderRadius: BorderRadius.circular(24),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   child: Column(
                     children: [
                       TextField(
@@ -241,16 +277,22 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                           hintText: 'e.g. johndoe',
                           labelStyle: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.75),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.75),
                           ),
-                          prefixIcon: const Icon(PhosphorIconsRegular.at, size: 20),
+                          prefixIcon: const Icon(
+                            PhosphorIconsRegular.at,
+                            size: 20,
+                          ),
                           border: InputBorder.none,
                         ),
                       ),
                       Divider(
                         height: 12,
                         thickness: 0.8,
-                        color: isDark ? Colors.white.withValues(alpha: 0.10) : Colors.black.withValues(alpha: 0.08),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.10)
+                            : Colors.black.withValues(alpha: 0.08),
                       ),
                       TextField(
                         controller: _passwordController,
@@ -260,16 +302,24 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                           hintText: 'Min 3 characters',
                           labelStyle: TextStyle(
                             fontSize: 14,
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.75),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.75),
                           ),
-                          prefixIcon: const Icon(PhosphorIconsRegular.lockKey, size: 20),
+                          prefixIcon: const Icon(
+                            PhosphorIconsRegular.lockKey,
+                            size: 20,
+                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePassword ? PhosphorIconsRegular.eyeSlash : PhosphorIconsRegular.eye,
+                              _obscurePassword
+                                  ? PhosphorIconsRegular.eyeSlash
+                                  : PhosphorIconsRegular.eye,
                               size: 20,
                             ),
                             onPressed: () {
-                              setState(() => _obscurePassword = !_obscurePassword);
+                              setState(
+                                () => _obscurePassword = !_obscurePassword,
+                              );
                             },
                           ),
                           border: InputBorder.none,
@@ -278,7 +328,9 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                       Divider(
                         height: 12,
                         thickness: 0.8,
-                        color: isDark ? Colors.white.withValues(alpha: 0.10) : Colors.black.withValues(alpha: 0.08),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.10)
+                            : Colors.black.withValues(alpha: 0.08),
                       ),
                       // Birthday Picker Field
                       InkWell(
@@ -288,7 +340,11 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Row(
                             children: [
-                              const Icon(PhosphorIconsRegular.cake, color: Colors.grey, size: 22),
+                              const Icon(
+                                PhosphorIconsRegular.cake,
+                                color: Colors.grey,
+                                size: 22,
+                              ),
                               const SizedBox(width: 14),
                               Expanded(
                                 child: Column(
@@ -298,24 +354,36 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
                                       'Birthday',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.color
+                                            ?.withValues(alpha: 0.6),
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       _selectedBirthday == null
                                           ? 'Select your birthday'
-                                          : DateFormat('yyyy-MM-dd').format(_selectedBirthday!),
+                                          : DateFormat(
+                                              'yyyy-MM-dd',
+                                            ).format(_selectedBirthday!),
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
-                                        color: _selectedBirthday == null ? Colors.grey : null,
+                                        color: _selectedBirthday == null
+                                            ? Colors.grey
+                                            : null,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              const Icon(PhosphorIconsRegular.calendar, size: 18, color: Colors.grey),
+                              const Icon(
+                                PhosphorIconsRegular.calendar,
+                                size: 18,
+                                color: Colors.grey,
+                              ),
                             ],
                           ),
                         ),
@@ -343,4 +411,3 @@ class _RegisterProfileScreenState extends ConsumerState<RegisterProfileScreen> {
     );
   }
 }
-

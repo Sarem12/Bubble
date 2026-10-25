@@ -953,7 +953,7 @@ class _DynamicDockState extends ConsumerState<DynamicDock>
                 mainAxisSize: MainAxisSize.min,
                 children: dockState.selectionActions.map((action) {
                   if (action.isPrimary) {
-                    final primaryTextCol = LiquidGlassTheme.primaryTextColor(
+                    final primaryTextCol = LiquidGlassTheme.textPrimary(
                       context,
                     );
                     return Padding(
@@ -1080,7 +1080,11 @@ class _DynamicDockState extends ConsumerState<DynamicDock>
         height: 38,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         label: label,
-        icon: Icon(icon, size: 16, color: Colors.white),
+        icon: Icon(
+          icon,
+          size: 16,
+          color: LiquidGlassTheme.textPrimary(context),
+        ),
         onPressed: onTap,
       );
     }

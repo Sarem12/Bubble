@@ -128,7 +128,9 @@ class ProfileHeader extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 14,
-                color: LiquidGlassTheme.textPrimary(context).withValues(alpha: 0.9),
+                color: LiquidGlassTheme.textPrimary(
+                  context,
+                ).withValues(alpha: 0.9),
               ),
               textAlign: TextAlign.center,
             ),
@@ -159,7 +161,9 @@ class ProfileHeader extends StatelessWidget {
                     isPrimary: false,
                     onPressed: () {
                       SharePlus.instance.share(
-                        ShareParams(text: 'Check out @${user.username} on Bubble!'),
+                        ShareParams(
+                          text: 'Check out @${user.username} on Bubble!',
+                        ),
                       );
                     },
                     label: 'Share Profile',
@@ -185,7 +189,9 @@ class ProfileHeader extends StatelessWidget {
                           ? PhosphorIconsRegular.userMinus
                           : PhosphorIconsRegular.userPlus,
                       size: 16,
-                      color: isFriend ? Colors.redAccent : Colors.white,
+                      color: isFriend
+                          ? Colors.redAccent
+                          : LiquidGlassTheme.textPrimary(context),
                     ),
                     onPressed: onToggleFriend,
                   ),

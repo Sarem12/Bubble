@@ -7,6 +7,7 @@ import '../core/transitions/bubble_page_transitions.dart';
 
 // Auth
 import '../features/auth/presentation/screens/login_screen.dart';
+import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/auth/presentation/screens/register_email_screen.dart';
 import '../features/auth/presentation/screens/register_otp_screen.dart';
 import '../features/auth/presentation/screens/register_profile_screen.dart';
@@ -44,7 +45,9 @@ final GoRouter appRouter = GoRouter(
 
     final sessionToken = SecureStorage.cachedSessionToken;
     final isLoggingIn =
-        state.uri.path == '/login' || state.uri.path.startsWith('/register');
+        state.uri.path == '/login' ||
+        state.uri.path == '/forgot-password' ||
+        state.uri.path.startsWith('/register');
 
     if (sessionToken == null && !isLoggingIn) {
       return '/login';
@@ -70,6 +73,14 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) => BubbleFadeThroughTransitionPage(
         key: state.pageKey,
         child: const LoginScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      parentNavigatorKey: rootNavigatorKey,
+      pageBuilder: (context, state) => BubbleFluidSlideTransitionPage(
+        key: state.pageKey,
+        child: const ForgotPasswordScreen(),
       ),
     ),
     GoRoute(

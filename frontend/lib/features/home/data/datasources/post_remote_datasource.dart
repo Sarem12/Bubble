@@ -96,7 +96,12 @@ class PostRemoteDataSource {
 
   Future<List<dynamic>> getComments(String postId) async {
     final response = await ApiClient.dio.get('/posts/$postId/replies');
-    return response.data['items'] ?? [];
+    final data = response.data;
+    if (data is List) return List<dynamic>.from(data);
+    if (data is Map && data['items'] is List) {
+      return List<dynamic>.from(data['items'] as List);
+    }
+    throw const FormatException('Unexpected replies response format');
   }
 
   Future<Map<String, dynamic>> createComment(

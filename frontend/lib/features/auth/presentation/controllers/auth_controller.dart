@@ -12,15 +12,16 @@ final authControllerProvider = AsyncNotifierProvider<AuthController, void>(() {
 
 class AuthController extends AsyncNotifier<void> {
   late AuthRemoteDataSource _dataSource;
-  
+
   String? registrationEmail;
   String? verificationToken;
+  String? passwordResetIdentifier;
+  String? passwordResetVerificationToken;
 
   @override
   FutureOr<void> build() {
     _dataSource = ref.read(authDataSourceProvider);
   }
-
 
   String _detectProvider(String identifier) {
     identifier = identifier.trim();
@@ -29,7 +30,7 @@ class AuthController extends AsyncNotifier<void> {
     } else if (identifier.contains('@')) {
       return 'email';
     }
-  
+
     if (RegExp(r'^[\+\d\s\-\(\)]+$').hasMatch(identifier)) {
       return 'phone';
     }
@@ -48,11 +49,15 @@ class AuthController extends AsyncNotifier<void> {
   Future<String?> login(String identifier, String password) async {
     state = const AsyncLoading();
     final provider = _detectProvider(identifier);
-    
+
     final cleanIdentifier = _normalizeIdentifier(identifier, provider);
 
     try {
-      final sessionToken = await _dataSource.login(provider, cleanIdentifier, password);
+      final sessionToken = await _dataSource.login(
+        provider,
+        cleanIdentifier,
+        password,
+      );
       await SecureStorage.saveSessionToken(sessionToken);
 
       final accessToken = await _dataSource.verifySession(sessionToken);
@@ -71,6 +76,67 @@ class AuthController extends AsyncNotifier<void> {
     try {
       await _dataSource.sendOtp(identifier.trim().toLowerCase());
       registrationEmail = identifier.trim().toLowerCase();
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return ErrorHandler.getMessage(e);
+    }
+  }
+
+  Future<String?> sendPasswordResetOtp(String identifier) async {
+    state = const AsyncLoading();
+    final trimmed = identifier.trim();
+    final provider = _detectProvider(trimmed);
+    if (provider == 'username') {
+      state = const AsyncData(null);
+      return 'Use the email address or phone number linked to your account.';
+    }
+    final normalized = _normalizeIdentifier(trimmed, provider);
+    try {
+      await _dataSource.sendOtp(
+        normalized,
+        provider: provider,
+        purpose: 'reset_password',
+      );
+      passwordResetIdentifier = normalized;
+      passwordResetVerificationToken = null;
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return ErrorHandler.getMessage(e);
+    }
+  }
+
+  Future<String?> verifyPasswordResetOtp(String code) async {
+    final identifier = passwordResetIdentifier;
+    if (identifier == null) return 'Enter your email or phone number first.';
+    state = const AsyncLoading();
+    try {
+      passwordResetVerificationToken = await _dataSource.verifyOtp(
+        identifier,
+        code,
+      );
+      state = const AsyncData(null);
+      return null;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      return ErrorHandler.getMessage(e);
+    }
+  }
+
+  Future<String?> resetPassword(String newPassword) async {
+    final token = passwordResetVerificationToken;
+    if (token == null) return 'Verify the code sent to you first.';
+    state = const AsyncLoading();
+    try {
+      await _dataSource.resetPassword(
+        verificationToken: token,
+        newPassword: newPassword,
+      );
+      passwordResetIdentifier = null;
+      passwordResetVerificationToken = null;
       state = const AsyncData(null);
       return null;
     } catch (e, st) {
@@ -100,9 +166,10 @@ class AuthController extends AsyncNotifier<void> {
     required String password,
     required String birthday,
   }) async {
-    if (verificationToken == null) return "Missing verification token. Please verify your email again.";
+    if (verificationToken == null)
+      return "Missing verification token. Please verify your email again.";
     state = const AsyncLoading();
-    
+
     final cleanUsername = username.replaceAll('@', '').trim().toLowerCase();
 
     try {

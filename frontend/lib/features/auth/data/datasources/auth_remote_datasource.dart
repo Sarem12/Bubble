@@ -66,10 +66,18 @@ class AuthRemoteDataSource {
     return response.data['access_token'];
   }
 
-  Future<void> sendOtp(String email) async {
+  Future<void> sendOtp(
+    String identifier, {
+    String provider = 'email',
+    String purpose = 'register',
+  }) async {
     await ApiClient.dio.post(
       '/auth/send-otp',
-      data: {"provider": "email", "identifier": email, "purpose": "register"},
+      data: {
+        "provider": provider,
+        "identifier": identifier,
+        "purpose": purpose,
+      },
     );
   }
 
@@ -79,6 +87,17 @@ class AuthRemoteDataSource {
       data: {"identifier": email, "code": code},
     );
     return response.data['verification_token'] ?? response.data['token'];
+  }
+
+  Future<void> resetPassword({
+    required String verificationToken,
+    required String newPassword,
+  }) async {
+    await ApiClient.dio.post(
+      '/auth/reset-password',
+      data: {'new_password': newPassword},
+      options: Options(headers: {'X-Verification-Token': verificationToken}),
+    );
   }
 
   Future<String> register({

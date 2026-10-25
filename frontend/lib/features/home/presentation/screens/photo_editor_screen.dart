@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import '../../../../app/theme.dart';
 import '../../../../core/utils/image_filter_math.dart';
 import '../../../../core/utils/ui_helpers.dart';
 import '../../../../shared/widgets/liquid_glass.dart';
@@ -34,10 +35,7 @@ class TextOverlayItem {
 class PhotoEditorScreen extends StatefulWidget {
   final XFile initialImage;
 
-  const PhotoEditorScreen({
-    super.key,
-    required this.initialImage,
-  });
+  const PhotoEditorScreen({super.key, required this.initialImage});
 
   @override
   State<PhotoEditorScreen> createState() => _PhotoEditorScreenState();
@@ -48,9 +46,9 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
 
   // Active filter & adjustments
   FilterPreset _selectedPreset = ImageFilterMath.presets[0];
-  double _brightness = 0.0;   // -100 to 100
-  double _contrast = 1.0;     // 0.5 to 2.0
-  double _saturation = 1.0;   // 0.0 to 2.0
+  double _brightness = 0.0; // -100 to 100
+  double _contrast = 1.0; // 0.5 to 2.0
+  double _saturation = 1.0; // 0.0 to 2.0
   int _rotationQuarterTurns = 0; // 0, 1, 2, 3
 
   // Active editor tab: 0 = Filters, 1 = Adjustments, 2 = Text Overlays
@@ -86,8 +84,9 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   }
 
   void _showAddTextDialog([TextOverlayItem? existingItem]) {
-    final TextEditingController textController =
-        TextEditingController(text: existingItem?.text ?? '');
+    final TextEditingController textController = TextEditingController(
+      text: existingItem?.text ?? '',
+    );
     Color selectedColor = existingItem?.color ?? Colors.white;
     bool hasBg = existingItem?.hasBackground ?? true;
     double fontSize = existingItem?.fontSize ?? 24.0;
@@ -110,7 +109,9 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return LiquidGlassContainer(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
               blur: 20,
               hasBlur: true,
               padding: EdgeInsets.only(
@@ -146,7 +147,10 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(PhosphorIconsRegular.x, color: Colors.white70),
+                        icon: const Icon(
+                          PhosphorIconsRegular.x,
+                          color: Colors.white70,
+                        ),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
@@ -167,15 +171,22 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                       fillColor: Colors.white.withValues(alpha: 0.08),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                        borderSide: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.15),
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                        borderSide: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.15),
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                        borderSide: const BorderSide(color: Colors.white, width: 1.5),
+                        borderSide: const BorderSide(
+                          color: Colors.white,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -220,7 +231,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                     children: [
                       Flexible(
                         child: Row(
-                        children: [
+                          children: [
                             const Flexible(
                               child: Text(
                                 'Highlight Pill',
@@ -229,31 +240,38 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                                 style: TextStyle(color: Colors.white70),
                               ),
                             ),
-                          const SizedBox(width: 8),
-                          Switch(
-                            value: hasBg,
-                            activeTrackColor: Colors.white.withValues(alpha: 0.5),
-                            activeThumbColor: Colors.white,
-                            onChanged: (val) {
-                              SafeHaptics.lightImpact();
-                              setModalState(() => hasBg = val);
-                            },
-                          ),
-                        ],
-                      ),
+                            const SizedBox(width: 8),
+                            Switch(
+                              value: hasBg,
+                              activeTrackColor: Colors.white.withValues(
+                                alpha: 0.5,
+                              ),
+                              activeThumbColor: Colors.white,
+                              onChanged: (val) {
+                                SafeHaptics.lightImpact();
+                                setModalState(() => hasBg = val);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         width: 140,
                         child: Row(
                           children: [
-                            const Icon(PhosphorIconsRegular.textT, size: 18, color: Colors.white70),
+                            const Icon(
+                              PhosphorIconsRegular.textT,
+                              size: 18,
+                              color: Colors.white70,
+                            ),
                             Expanded(
                               child: Slider(
                                 value: fontSize,
                                 min: 14,
                                 max: 42,
                                 activeColor: Colors.white,
-                                onChanged: (v) => setModalState(() => fontSize = v),
+                                onChanged: (v) =>
+                                    setModalState(() => fontSize = v),
                               ),
                             ),
                           ],
@@ -277,7 +295,8 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                           } else {
                             _textOverlays.add(
                               TextOverlayItem(
-                                id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                id: DateTime.now().millisecondsSinceEpoch
+                                    .toString(),
                                 text: text,
                                 color: selectedColor,
                                 hasBackground: hasBg,
@@ -303,11 +322,15 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   Future<void> _exportAndSave() async {
     setState(() => _isSaving = true);
     try {
-      final boundary = _previewKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+      final boundary =
+          _previewKey.currentContext?.findRenderObject()
+              as RenderRepaintBoundary?;
       if (boundary == null) throw Exception('Preview boundary not ready');
 
       final ui.Image image = await boundary.toImage(pixelRatio: 2.5);
-      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      final ByteData? byteData = await image.toByteData(
+        format: ui.ImageByteFormat.png,
+      );
       if (byteData == null) throw Exception('Failed to extract byte data');
 
       final Uint8List pngBytes = byteData.buffer.asUint8List();
@@ -345,7 +368,11 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     'Save Options',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
                   ),
                 ),
                 ListTile(
@@ -355,11 +382,23 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                       color: Colors.white.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(PhosphorIconsRegular.copy, color: Colors.white, size: 20),
+                    child: const Icon(
+                      PhosphorIconsRegular.copy,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
-                  title: const Text('Save as new photo (Copy)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                  subtitle: const Text('Keeps original and adds a new photo to your device gallery',
-                      style: TextStyle(color: Colors.white54, fontSize: 12)),
+                  title: const Text(
+                    'Save as new photo (Copy)',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    'Keeps original and adds a new photo to your device gallery',
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
                   onTap: () {
                     SafeHaptics.lightImpact();
                     Navigator.pop(ctx, 'copy');
@@ -372,11 +411,23 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                       color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(PhosphorIconsRegular.checkCircle, color: Colors.white, size: 20),
+                    child: const Icon(
+                      PhosphorIconsRegular.checkCircle,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
-                  title: const Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-                  subtitle: const Text('Save changes to this photo',
-                      style: TextStyle(color: Colors.white54, fontSize: 12)),
+                  title: const Text(
+                    'Save',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    'Save changes to this photo',
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
                   onTap: () {
                     SafeHaptics.lightImpact();
                     Navigator.pop(ctx, 'save');
@@ -398,7 +449,8 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
         try {
           await PhotoManager.editor.saveImage(
             pngBytes,
-            filename: 'Bubble_Edited_${DateTime.now().millisecondsSinceEpoch}.jpg',
+            filename:
+                'Bubble_Edited_${DateTime.now().millisecondsSinceEpoch}.jpg',
           );
         } catch (saveErr) {
           debugPrint('Save to device gallery error: $saveErr');
@@ -421,142 +473,237 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: LiquidGlassAppBar(
-        leading: IconButton(
-          icon: const Icon(PhosphorIconsRegular.caretLeft, color: Colors.white, size: 22),
-          onPressed: () {
-            SafeHaptics.lightImpact();
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          'Edit',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 17),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(PhosphorIconsRegular.crop, color: Colors.white, size: 20),
-            tooltip: 'Rotate 90°',
+    return Theme(
+      data: AppTheme.darkTheme,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: LiquidGlassAppBar(
+          leading: IconButton(
+            icon: const Icon(
+              PhosphorIconsRegular.caretLeft,
+              color: Colors.white,
+              size: 22,
+            ),
             onPressed: () {
               SafeHaptics.lightImpact();
-              _rotateImage();
+              Navigator.pop(context);
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: LiquidGlassButton(
-              height: 34,
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              label: 'Done',
-              isPrimary: true,
-              isLoading: _isSaving,
-              onPressed: _isSaving ? null : _exportAndSave,
+          title: const Text(
+            'Photo editor',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              fontSize: 16,
             ),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // 1. High-Performance Photo Canvas with Real-Time Matrix Transformations & Overlays
-          Expanded(
-            child: Center(
-              child: RepaintBoundary(
-                key: _previewKey,
-                child: RotatedBox(
-                  quarterTurns: _rotationQuarterTurns,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Active Filtered Image
-                      ColorFiltered(
-                        colorFilter: ColorFilter.matrix(_computedMatrix),
-                        child: Image.file(
-                          File(widget.initialImage.path),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-
-                      // Interactive Draggable Text Overlays
-                      ..._textOverlays.map((item) {
-                        return Positioned(
-                          left: item.position.dx,
-                          top: item.position.dy,
-                          child: GestureDetector(
-                            onPanUpdate: (details) {
-                              setState(() {
-                                item.position = Offset(
-                                  (item.position.dx + details.delta.dx).clamp(0.0, 360.0),
-                                  (item.position.dy + details.delta.dy).clamp(0.0, 600.0),
-                                );
-                              });
-                            },
-                            onTap: () => _showAddTextDialog(item),
-                            onLongPress: () {
-                              setState(() {
-                                _textOverlays.remove(item);
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: item.hasBackground ? Colors.black.withValues(alpha: 0.65) : Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.3),
-                                  width: 0.8,
-                                ),
-                              ),
-                              child: Text(
-                                item.text,
-                                style: TextStyle(
-                                  color: item.color,
-                                  fontSize: item.fontSize,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 4.0,
-                                      color: Colors.black.withValues(alpha: 0.8),
-                                      offset: const Offset(1, 1),
-                                    ),
-                                  ],
-                                ),
-                              ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                PhosphorIconsRegular.crop,
+                color: Colors.white,
+                size: 20,
+              ),
+              tooltip: 'Rotate 90°',
+              onPressed: () {
+                SafeHaptics.lightImpact();
+                _rotateImage();
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: LiquidGlassButton(
+                height: 34,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                label: 'Done',
+                isPrimary: true,
+                isLoading: _isSaving,
+                onPressed: _isSaving ? null : _exportAndSave,
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            // 1. High-Performance Photo Canvas with Real-Time Matrix Transformations & Overlays
+            Expanded(
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.center,
+                    radius: 1.2,
+                    colors: [Color(0xFF202329), Color(0xFF08090B)],
+                  ),
+                ),
+                child: Center(
+                  child: RepaintBoundary(
+                    key: _previewKey,
+                    child: RotatedBox(
+                      quarterTurns: _rotationQuarterTurns,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Active Filtered Image
+                          ColorFiltered(
+                            colorFilter: ColorFilter.matrix(_computedMatrix),
+                            child: Image.file(
+                              File(widget.initialImage.path),
+                              fit: BoxFit.contain,
                             ),
                           ),
-                        );
-                      }),
-                    ],
+
+                          // Interactive Draggable Text Overlays
+                          ..._textOverlays.map((item) {
+                            return Positioned(
+                              left: item.position.dx,
+                              top: item.position.dy,
+                              child: GestureDetector(
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    item.position = Offset(
+                                      (item.position.dx + details.delta.dx)
+                                          .clamp(0.0, 360.0),
+                                      (item.position.dy + details.delta.dy)
+                                          .clamp(0.0, 600.0),
+                                    );
+                                  });
+                                },
+                                onTap: () => _showAddTextDialog(item),
+                                onLongPress: () {
+                                  setState(() {
+                                    _textOverlays.remove(item);
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: item.hasBackground
+                                        ? Colors.black.withValues(alpha: 0.65)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                      width: 0.8,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    item.text,
+                                    style: TextStyle(
+                                      color: item.color,
+                                      fontSize: item.fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      shadows: [
+                                        Shadow(
+                                          blurRadius: 4.0,
+                                          color: Colors.black.withValues(
+                                            alpha: 0.8,
+                                          ),
+                                          offset: const Offset(1, 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
 
-          // 2. Active Tab Sub-Controls (Filters / Adjustments / Text)
-          LiquidGlassContainer(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            blur: 20,
-            hasBlur: true,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: SafeArea(
-              top: false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_activeTab == 0) _buildFiltersCarousel(),
-                  if (_activeTab == 1) _buildAdjustmentsControls(),
-                  if (_activeTab == 2) _buildTextControls(),
-                  const SizedBox(height: 8),
-                  // Tab Selection Bar (Filters, Adjust, Text)
-                  _buildBottomTabBar(),
-                ],
+            // 2. Active Tab Sub-Controls (Filters / Adjustments / Text)
+            LiquidGlassContainer(
+              margin: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+              borderRadius: BorderRadius.circular(30),
+              blur: 24,
+              hasBlur: true,
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 1, 10, 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _activeTab == 0
+                                ? PhosphorIconsRegular.sparkle
+                                : _activeTab == 1
+                                ? PhosphorIconsRegular.slidersHorizontal
+                                : PhosphorIconsRegular.textT,
+                            color: Colors.white70,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _activeTab == 0
+                                ? 'Looks'
+                                : _activeTab == 1
+                                ? 'Adjust image'
+                                : 'Text overlays',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const Spacer(),
+                          if (_activeTab == 1 &&
+                              (_brightness != 0 ||
+                                  _contrast != 1 ||
+                                  _saturation != 1))
+                            LiquidGlassContainer(
+                              borderRadius: BorderRadius.circular(16),
+                              blur: 12,
+                              hasBlur: true,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              onTap: _resetAdjustments,
+                              child: const Text(
+                                'Reset',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          if (_activeTab == 2 && _textOverlays.isNotEmpty)
+                            Text(
+                              '${_textOverlays.length} added',
+                              style: const TextStyle(
+                                color: Colors.white54,
+                                fontSize: 11,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (_activeTab == 0) _buildFiltersCarousel(),
+                    if (_activeTab == 1) _buildAdjustmentsControls(),
+                    if (_activeTab == 2) _buildTextControls(),
+                    const SizedBox(height: 4),
+                    _buildBottomTabBar(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -566,7 +713,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   // ---------------------------------------------------------------------------
   Widget _buildFiltersCarousel() {
     return SizedBox(
-      height: 100,
+      height: 102,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -577,25 +724,29 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
 
           return GestureDetector(
             onTap: () {
+              SafeHaptics.selectionClick();
               setState(() {
                 _selectedPreset = preset;
               });
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              width: 72,
+              width: 74,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  LiquidGlassContainer(
                     width: 58,
                     height: 58,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected ? Colors.white : Colors.white24,
-                        width: isSelected ? 2.5 : 1.0,
-                      ),
+                    borderRadius: BorderRadius.circular(16),
+                    blur: 12,
+                    hasBlur: true,
+                    padding: const EdgeInsets.all(2),
+                    border: Border.all(
+                      color: isSelected
+                          ? Colors.white.withValues(alpha: 0.85)
+                          : Colors.white.withValues(alpha: 0.18),
+                      width: isSelected ? 1.8 : 1,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
@@ -616,7 +767,9 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
                     style: TextStyle(
                       color: isSelected ? Colors.white : Colors.white70,
                       fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                 ],
@@ -633,7 +786,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   // ---------------------------------------------------------------------------
   Widget _buildAdjustmentsControls() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.fromLTRB(8, 3, 8, 2),
       child: Column(
         children: [
           // Brightness Slider
@@ -666,14 +819,6 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
             displayValue: '${((_saturation - 1.0) * 100).round()}%',
             onChanged: (v) => setState(() => _saturation = v),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: _resetAdjustments,
-              icon: const Icon(Icons.restart_alt_rounded, size: 16, color: Colors.white54),
-              label: const Text('Reset', style: TextStyle(color: Colors.white54, fontSize: 12)),
-            ),
-          ),
         ],
       ),
     );
@@ -704,7 +849,7 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
             value: value,
             min: min,
             max: max,
-            activeColor: Colors.white,
+            activeColor: LiquidGlassTheme.primaryTextColor(context),
             inactiveColor: Colors.white24,
             onChanged: onChanged,
           ),
@@ -726,30 +871,30 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   // -------------------------------------------------------------
   Widget _buildTextControls() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton.icon(
+          LiquidGlassButton(
             onPressed: () => _showAddTextDialog(),
             icon: const Icon(Icons.add_rounded, size: 18),
-            label: const Text('Add Text'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
+            label: 'Add text',
+            height: 40,
+            isBrandGradient: true,
           ),
           if (_textOverlays.isNotEmpty) ...[
             const SizedBox(width: 12),
-            OutlinedButton.icon(
+            LiquidGlassButton(
               onPressed: () => setState(() => _textOverlays.clear()),
-              icon: const Icon(Icons.delete_outline_rounded, size: 18, color: Colors.redAccent),
-              label: const Text('Clear All', style: TextStyle(color: Colors.redAccent)),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.redAccent),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                size: 17,
+                color: Color(0xFFFF7777),
               ),
+              label: 'Clear all',
+              height: 40,
+              isPrimary: false,
+              customTextColor: Colors.white,
             ),
           ],
         ],
@@ -761,25 +906,49 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
   // BOTTOM TAB BAR (FILTERS / ADJUST / TEXT)
   // -------------------------------------------------------------
   Widget _buildBottomTabBar() {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.white12, width: 0.8)),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+    return LiquidGlassContainer(
+      borderRadius: BorderRadius.circular(24),
+      blur: 14,
+      hasBlur: true,
+      padding: const EdgeInsets.all(4),
+      border: Border.all(color: Colors.white.withValues(alpha: 0.09)),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildTabItem(index: 0, label: 'Filters', icon: PhosphorIconsRegular.sparkle),
-          _buildTabItem(index: 1, label: 'Adjust', icon: PhosphorIconsRegular.slidersHorizontal),
-          _buildTabItem(index: 2, label: 'Text', icon: PhosphorIconsRegular.textT),
+          Expanded(
+            child: _buildTabItem(
+              index: 0,
+              label: 'Filters',
+              icon: PhosphorIconsRegular.sparkle,
+            ),
+          ),
+          Expanded(
+            child: _buildTabItem(
+              index: 1,
+              label: 'Adjust',
+              icon: PhosphorIconsRegular.slidersHorizontal,
+            ),
+          ),
+          Expanded(
+            child: _buildTabItem(
+              index: 2,
+              label: 'Text',
+              icon: PhosphorIconsRegular.textT,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTabItem({required int index, required String label, required IconData icon}) {
+  Widget _buildTabItem({
+    required int index,
+    required String label,
+    required IconData icon,
+  }) {
     final isSelected = _activeTab == index;
-    final color = isSelected ? Colors.white : Colors.white54;
+    final color = isSelected
+        ? LiquidGlassTheme.primaryTextColor(context)
+        : Colors.white54;
 
     return GestureDetector(
       onTap: () {
@@ -788,31 +957,33 @@ class _PhotoEditorScreenState extends State<PhotoEditorScreen> {
       },
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+        duration: const Duration(milliseconds: 220),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Colors.white.withValues(alpha: 0.16)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(18),
+          gradient: isSelected
+              ? LiquidGlassTheme.primaryLiquidGradient(context: context)
+              : null,
+          borderRadius: BorderRadius.circular(20),
           border: isSelected
               ? Border.all(
-                  color: Colors.white.withValues(alpha: 0.4),
-                  width: 1,
+                  color: LiquidGlassTheme.pillBorderColor(
+                    context,
+                    isSelected: true,
+                  ),
                 )
               : null,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: color, size: 20),
+            Icon(icon, color: color, size: 18),
             const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
                 color: color,
-                fontSize: 11,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                fontSize: 10,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
           ],

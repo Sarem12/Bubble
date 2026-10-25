@@ -32,7 +32,9 @@ class ProfileBubblesTab extends StatelessWidget {
             children: [
               Text(
                 emptyMessage,
-                style: TextStyle(color: LiquidGlassTheme.textSecondary(context)),
+                style: TextStyle(
+                  color: LiquidGlassTheme.textSecondary(context),
+                ),
                 textAlign: TextAlign.center,
               ),
               if (onCreateBubble != null) ...[
@@ -40,7 +42,11 @@ class ProfileBubblesTab extends StatelessWidget {
                 LiquidGlassButton(
                   height: 38,
                   label: 'Create a Bubble',
-                  icon: const Icon(PhosphorIconsRegular.plus, size: 16, color: Colors.white),
+                  icon: Icon(
+                    PhosphorIconsRegular.plus,
+                    size: 16,
+                    color: LiquidGlassTheme.textPrimary(context),
+                  ),
                   onPressed: onCreateBubble,
                 ),
               ],
@@ -64,7 +70,10 @@ class ProfileBubblesTab extends StatelessWidget {
               onTap: onCreateBubble,
               child: LiquidGlassContainer(
                 borderRadius: BorderRadius.circular(18),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 child: Row(
                   children: [
                     Container(
@@ -132,7 +141,9 @@ class ProfileBubblesTab extends StatelessWidget {
           name = item.name;
           description = item.description;
         } else {
-          final b = item is Map<String, dynamic> ? item : Map<String, dynamic>.from(item as Map);
+          final b = item is Map<String, dynamic>
+              ? item
+              : Map<String, dynamic>.from(item as Map);
           name = (b['name'] ?? '').toString();
           description = (b['description'] ?? '').toString();
         }
@@ -151,18 +162,26 @@ class ProfileBubblesTab extends StatelessWidget {
                     shape: BoxShape.circle,
                     gradient: LiquidGlassTheme.bubbleBlueGradient,
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: isDark ? 0.25 : 0.40),
+                      color: Colors.white.withValues(
+                        alpha: isDark ? 0.25 : 0.40,
+                      ),
                       width: 1.0,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.12),
+                        color: Colors.black.withValues(
+                          alpha: isDark ? 0.25 : 0.12,
+                        ),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
                     ],
                   ),
-                  child: const Icon(PhosphorIconsFill.circlesThree, color: Colors.white, size: 20),
+                  child: const Icon(
+                    PhosphorIconsFill.circlesThree,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(

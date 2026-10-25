@@ -43,6 +43,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   bool _isOtherLoading = false;
   bool _otherHasError = false;
   bool _isFriend = false;
+  int _otherRequestId = 0;
 
   bool _isSelfUser(UserProfile? myProfile) {
     if (widget.userId == null ||
@@ -76,6 +77,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     if (oldWidget.userId != widget.userId) {
       _fetchedUserId = null;
       _tabsLoading = true;
+      _otherRequestId++;
+      _otherProfile = null;
+      _isOtherLoading = false;
+      _otherHasError = false;
       final targetId = widget.userId?.trim();
       if (targetId != null && targetId.isNotEmpty && targetId != 'me') {
         final myProfile = ref.read(profileControllerProvider).value;
@@ -93,7 +98,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   }
 
   Future<void> _fetchOtherUserData(String targetId) async {
-    if (_isOtherLoading) return;
+    final requestId = ++_otherRequestId;
     setState(() {
       _isOtherLoading = true;
       _otherHasError = false;
@@ -118,7 +123,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
       final friendStatus = (friendsList as List<FriendUser>).any((f) => f.id == targetId);
 
-      if (mounted) {
+      if (mounted && requestId == _otherRequestId) {
         setState(() {
           _otherProfile = profileRes;
           _posts = postsList;
@@ -130,7 +135,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         });
       }
     } catch (e) {
-      if (mounted) {
+      if (mounted && requestId == _otherRequestId) {
         setState(() {
           _isOtherLoading = false;
           _otherHasError = true;

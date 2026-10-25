@@ -25,8 +25,14 @@ class ChatInboxScreen extends ConsumerWidget {
       if (next.hasValue && next.value != null) {
         try {
           final dynamic raw = next.value;
-          final Map<String, dynamic> payload = raw is String ? jsonDecode(raw) : (raw is Map<String, dynamic> ? raw : {});
-          final convId = payload['conversation_id'] ?? (payload['message'] is Map ? payload['message']['conversation_id'] : null);
+          final Map<String, dynamic> payload = raw is String
+              ? jsonDecode(raw)
+              : (raw is Map<String, dynamic> ? raw : {});
+          final convId =
+              payload['conversation_id'] ??
+              (payload['message'] is Map
+                  ? payload['message']['conversation_id']
+                  : null);
           if (convId != null) {
             ref.invalidate(lastMessageProvider(convId.toString()));
             ref.invalidate(conversationsProvider);
@@ -161,14 +167,18 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
   bool get wantKeepAlive => true;
 
   void _acceptRequest(String userId) async {
-    final success = await ref.read(activityControllerProvider.notifier).acceptRequest(userId);
+    final success = await ref
+        .read(activityControllerProvider.notifier)
+        .acceptRequest(userId);
     if (success && mounted) {
       UiHelpers.showSuccess(context, "Friend request accepted!");
     }
   }
 
   void _declineRequest(String userId) async {
-    final success = await ref.read(activityControllerProvider.notifier).declineRequest(userId);
+    final success = await ref
+        .read(activityControllerProvider.notifier)
+        .declineRequest(userId);
     if (success && mounted) {
       UiHelpers.showSuccess(context, "Friend request removed");
     }
@@ -201,17 +211,28 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
               padding: const EdgeInsets.only(top: 80, left: 32, right: 32),
               child: Column(
                 children: [
-                  Icon(Icons.error_outline, size: 52, color: isDark ? Colors.white38 : Colors.grey[400]),
+                  Icon(
+                    Icons.error_outline,
+                    size: 52,
+                    color: isDark ? Colors.white38 : Colors.grey[400],
+                  ),
                   const SizedBox(height: 14),
                   Text(
                     'Failed to load activity',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: LiquidGlassTheme.textPrimary(context)),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: LiquidGlassTheme.textPrimary(context),
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     '$err',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: LiquidGlassTheme.textSecondary(context), fontSize: 13),
+                    style: TextStyle(
+                      color: LiquidGlassTheme.textSecondary(context),
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(height: 18),
                   LiquidGlassButton(
@@ -241,21 +262,34 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.04),
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.06)
+                              : Colors.black.withValues(alpha: 0.04),
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.favorite_border, size: 56, color: isDark ? Colors.white38 : Colors.grey[400]),
+                        child: Icon(
+                          Icons.favorite_border,
+                          size: 56,
+                          color: isDark ? Colors.white38 : Colors.grey[400],
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Text(
                         'No new activity yet',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: LiquidGlassTheme.textPrimary(context)),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: LiquidGlassTheme.textPrimary(context),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'When people react to your posts, reply to your comments, or send you friend requests, they will appear here.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: LiquidGlassTheme.textSecondary(context), height: 1.4),
+                        style: TextStyle(
+                          color: LiquidGlassTheme.textSecondary(context),
+                          height: 1.4,
+                        ),
                       ),
                     ],
                   ),
@@ -274,18 +308,29 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
                     children: [
                       Text(
                         'Friend Requests',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: LiquidGlassTheme.textPrimary(context)),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: LiquidGlassTheme.textPrimary(context),
+                        ),
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           '${requests.length}',
-                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -295,7 +340,9 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
                 Divider(
                   height: 24,
                   thickness: 1,
-                  color: isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFE2E8F0),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : const Color(0xFFE2E8F0),
                 ),
               ],
               if (activities.isNotEmpty) ...[
@@ -304,18 +351,24 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
                     child: Text(
                       'Recent Activity',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: LiquidGlassTheme.textSecondary(context)),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: LiquidGlassTheme.textSecondary(context),
+                      ),
                     ),
                   ),
-                ...activities.map((act) => ActivityTile(
-                  activity: act,
-                  onAcceptFriend: act.type == 'friend_request'
-                      ? () => _acceptRequest(act.actorId)
-                      : null,
-                  onDeclineFriend: act.type == 'friend_request'
-                      ? () => _declineRequest(act.actorId)
-                      : null,
-                )),
+                ...activities.map(
+                  (act) => ActivityTile(
+                    activity: act,
+                    onAcceptFriend: act.type == 'friend_request'
+                        ? () => _acceptRequest(act.actorId)
+                        : null,
+                    onDeclineFriend: act.type == 'friend_request'
+                        ? () => _declineRequest(act.actorId)
+                        : null,
+                  ),
+                ),
               ],
               const SizedBox(height: 24),
             ],
@@ -338,37 +391,43 @@ class _ActivityTabViewState extends ConsumerState<_ActivityTabView>
           req.displayName,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.bold, color: LiquidGlassTheme.textPrimary(context)),
-      ),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: LiquidGlassTheme.textPrimary(context),
+          ),
+        ),
       ),
       subtitle: Text(
         '@${req.username}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: LiquidGlassTheme.textSecondary(context), fontSize: 13),
+        style: TextStyle(
+          color: LiquidGlassTheme.textSecondary(context),
+          fontSize: 13,
+        ),
       ),
       trailing: FittedBox(
         fit: BoxFit.scaleDown,
         child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          LiquidGlassButton(
-            onPressed: () => _acceptRequest(req.userId),
-            label: 'Confirm',
-            height: 32,
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            isPrimary: true,
-          ),
-          const SizedBox(width: 8),
-          LiquidGlassButton(
-            onPressed: () => _declineRequest(req.userId),
-            label: 'Delete',
-            height: 32,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            isPrimary: false,
-          ),
-        ],
-      ),
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LiquidGlassButton(
+              onPressed: () => _acceptRequest(req.userId),
+              label: 'Confirm',
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              isPrimary: true,
+            ),
+            const SizedBox(width: 8),
+            LiquidGlassButton(
+              onPressed: () => _declineRequest(req.userId),
+              label: 'Delete',
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              isPrimary: false,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -408,7 +467,11 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
     ref.read(dynamicDockProvider.notifier).resetToNavigation();
   }
 
-  void _toggleSelection(String convId, String targetId, List<EnrichedConversation> conversations) {
+  void _toggleSelection(
+    String convId,
+    String targetId,
+    List<EnrichedConversation> conversations,
+  ) {
     SafeHaptics.lightImpact();
     setState(() {
       if (_selectedIds.contains(convId)) {
@@ -439,53 +502,55 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
   }
 
   void _syncSelectionDock(List<EnrichedConversation> conversations) {
-    ref.read(dynamicDockProvider.notifier).setSelectionMode(
-      count: _selectedIds.length,
-      title: '${_selectedIds.length} Selected',
-      onCancel: _clearSelection,
-      actions: [
-        DynamicDockAction(
-          icon: LucideIcons.bellOff,
-          label: 'Mute',
-          onTap: () {
-            final count = _selectedIds.length;
-            _clearSelection();
-            UiHelpers.showSuccess(context, "Muted $count chats");
-          },
-        ),
-        DynamicDockAction(
-          icon: LucideIcons.pin,
-          label: 'Pin',
-          onTap: () {
-            final count = _selectedIds.length;
-            _clearSelection();
-            UiHelpers.showSuccess(context, "Pinned $count chats");
-          },
-        ),
-        DynamicDockAction(
-          icon: LucideIcons.trash2,
-          label: 'Delete',
-          isDestructive: true,
-          onTap: () => _confirmBatchDelete(context),
-        ),
-      ],
-      popouts: [
-        DynamicDockPopoutItem(
-          icon: LucideIcons.checkCheck,
-          label: 'Select All',
-          onTap: () => _selectAll(conversations),
-        ),
-        DynamicDockPopoutItem(
-          icon: LucideIcons.mailOpen,
-          label: 'Mark as Read',
-          onTap: () {
-            final count = _selectedIds.length;
-            _clearSelection();
-            UiHelpers.showSuccess(context, "Marked $count as read");
-          },
-        ),
-      ],
-    );
+    ref
+        .read(dynamicDockProvider.notifier)
+        .setSelectionMode(
+          count: _selectedIds.length,
+          title: '${_selectedIds.length} Selected',
+          onCancel: _clearSelection,
+          actions: [
+            DynamicDockAction(
+              icon: LucideIcons.bellOff,
+              label: 'Mute',
+              onTap: () {
+                final count = _selectedIds.length;
+                _clearSelection();
+                UiHelpers.showSuccess(context, "Muted $count chats");
+              },
+            ),
+            DynamicDockAction(
+              icon: LucideIcons.pin,
+              label: 'Pin',
+              onTap: () {
+                final count = _selectedIds.length;
+                _clearSelection();
+                UiHelpers.showSuccess(context, "Pinned $count chats");
+              },
+            ),
+            DynamicDockAction(
+              icon: LucideIcons.trash2,
+              label: 'Delete',
+              isDestructive: true,
+              onTap: () => _confirmBatchDelete(context),
+            ),
+          ],
+          popouts: [
+            DynamicDockPopoutItem(
+              icon: LucideIcons.checkCheck,
+              label: 'Select All',
+              onTap: () => _selectAll(conversations),
+            ),
+            DynamicDockPopoutItem(
+              icon: LucideIcons.mailOpen,
+              label: 'Mark as Read',
+              onTap: () {
+                final count = _selectedIds.length;
+                _clearSelection();
+                UiHelpers.showSuccess(context, "Marked $count as read");
+              },
+            ),
+          ],
+        );
   }
 
   void _confirmBatchDelete(BuildContext context) {
@@ -495,7 +560,10 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
       builder: (dialogCtx) => AlertDialog(
         title: Text(
           'Delete $count Chat${count > 1 ? 's' : ''}?',
-          style: TextStyle(fontWeight: FontWeight.bold, color: LiquidGlassTheme.textPrimary(dialogCtx)),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: LiquidGlassTheme.textPrimary(dialogCtx),
+          ),
         ),
         content: Text(
           'Are you sure? All selected messages and chat history will be permanently deleted.',
@@ -504,7 +572,12 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogCtx),
-            child: Text('Cancel', style: TextStyle(color: LiquidGlassTheme.textSecondary(dialogCtx))),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: LiquidGlassTheme.textSecondary(dialogCtx),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () async {
@@ -519,11 +592,20 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
 
               ref.invalidate(conversationsProvider);
               if (context.mounted) {
-                UiHelpers.showSuccess(context, "Deleted $count conversation${count > 1 ? 's' : ''}");
+                UiHelpers.showSuccess(
+                  context,
+                  "Deleted $count conversation${count > 1 ? 's' : ''}",
+                );
               }
               _clearSelection();
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -556,17 +638,28 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
               padding: const EdgeInsets.only(top: 80, left: 32, right: 32),
               child: Column(
                 children: [
-                  Icon(Icons.error_outline, size: 52, color: isDark ? Colors.white38 : Colors.grey[400]),
+                  Icon(
+                    Icons.error_outline,
+                    size: 52,
+                    color: isDark ? Colors.white38 : Colors.grey[400],
+                  ),
                   const SizedBox(height: 14),
                   Text(
                     'Chat Service Offline',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: LiquidGlassTheme.textPrimary(context)),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: LiquidGlassTheme.textPrimary(context),
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     '$err',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: LiquidGlassTheme.textSecondary(context), fontSize: 13),
+                    style: TextStyle(
+                      color: LiquidGlassTheme.textSecondary(context),
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(height: 18),
                   LiquidGlassButton(
@@ -590,16 +683,51 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
                   padding: const EdgeInsets.only(top: 100),
                   child: Column(
                     children: [
-                      Text(
-                        'No active conversations yet.',
-                        style: TextStyle(fontSize: 16, color: LiquidGlassTheme.textPrimary(context)),
+                      Container(
+                        width: 68,
+                        height: 68,
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.08)
+                              : const Color(0xFFF1F5F9),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          PhosphorIconsRegular.chatCircleDots,
+                          size: 30,
+                          color: LiquidGlassTheme.textSecondary(context),
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      LiquidGlassButton(
+                      const SizedBox(height: 18),
+                      Text(
+                        'No chats yet',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: LiquidGlassTheme.textPrimary(context),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Start a conversation with a friend.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: LiquidGlassTheme.textSecondary(context),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton.icon(
                         onPressed: widget.onStartChat,
-                        label: 'Start Chat',
-                        height: 38,
-                        isPrimary: true,
+                        icon: const Icon(PhosphorIconsRegular.plus, size: 18),
+                        label: const Text('Start a chat'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: LiquidGlassTheme.textPrimary(
+                            context,
+                          ),
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -621,7 +749,8 @@ class _MessagesTabViewState extends ConsumerState<_MessagesTabView>
                 lastMsg: conv.lastMessage,
                 isSelectionMode: isSelectionMode,
                 isSelected: isSelected,
-                onToggleSelect: () => _toggleSelection(conv.id, conv.friendId, conversations),
+                onToggleSelect: () =>
+                    _toggleSelection(conv.id, conv.friendId, conversations),
               );
             },
           );
@@ -659,7 +788,9 @@ class ConversationTile extends ConsumerWidget {
     return userAsync.when(
       data: (user) => Container(
         color: isSelected
-            ? (isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFF1F3F6))
+            ? (isDark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : const Color(0xFFF1F3F6))
             : Colors.transparent,
         child: ListTile(
           leading: Stack(
@@ -757,8 +888,16 @@ class ConversationTile extends ConsumerWidget {
       ),
       loading: () => ListTile(
         leading: const UserAvatar(radius: 24),
-        title: const SizedBox(width: 100, height: 16, child: LinearProgressIndicator()),
-        subtitle: Text(displayMsg, maxLines: 1, overflow: TextOverflow.ellipsis),
+        title: const SizedBox(
+          width: 100,
+          height: 16,
+          child: LinearProgressIndicator(),
+        ),
+        subtitle: Text(
+          displayMsg,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       error: (_, _) => ListTile(
         leading: const UserAvatar(radius: 24),
@@ -769,7 +908,11 @@ class ConversationTile extends ConsumerWidget {
             color: LiquidGlassTheme.textPrimary(context),
           ),
         ),
-        subtitle: Text(displayMsg, maxLines: 1, overflow: TextOverflow.ellipsis),
+        subtitle: Text(
+          displayMsg,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

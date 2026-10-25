@@ -12,8 +12,8 @@ export 'bubble_bookmark_icon.dart';
 class LiquidGlassTheme {
   // --- The Signature Bubble Iridescent Palette ---
   static const Color bubbleMagenta = Color(0xFFC913B9); // #C913B9
-  static const Color bubbleBlue = Color(0xFF1781E6);    // #1781E6
-  static const Color bubbleGreen = Color(0xFF01E762);   // #01E762
+  static const Color bubbleBlue = Color(0xFF1781E6); // #1781E6
+  static const Color bubbleGreen = Color(0xFF01E762); // #01E762
 
   /// Shared translucent surface used by floating navigation and dock controls.
   static LinearGradient dockSurfaceGradient({
@@ -27,20 +27,20 @@ class LiquidGlassTheme {
       end: Alignment.bottomRight,
       colors: isDark
           ? [
-              const Color(0xFF242832).withValues(
-                alpha: 0.48 + emphasisAdjustment,
-              ),
-              const Color(0xFF111827).withValues(
-                alpha: 0.36 + emphasisAdjustment,
-              ),
+              const Color(
+                0xFF242832,
+              ).withValues(alpha: 0.48 + emphasisAdjustment),
+              const Color(
+                0xFF111827,
+              ).withValues(alpha: 0.36 + emphasisAdjustment),
             ]
           : [
               Colors.white.withValues(
                 alpha: 0.64 + lightAdjustment + emphasisAdjustment,
               ),
-              const Color(0xFFF8FAFC).withValues(
-                alpha: 0.52 + lightAdjustment + emphasisAdjustment,
-              ),
+              const Color(
+                0xFFF8FAFC,
+              ).withValues(alpha: 0.52 + lightAdjustment + emphasisAdjustment),
             ],
     );
   }
@@ -56,9 +56,7 @@ class LiquidGlassTheme {
   }) => [
     BoxShadow(
       color: Colors.black.withValues(
-        alpha: isDark
-            ? (isScrolled ? 0.56 : 0.46)
-            : (isScrolled ? 0.14 : 0.10),
+        alpha: isDark ? (isScrolled ? 0.56 : 0.46) : (isScrolled ? 0.14 : 0.10),
       ),
       blurRadius: isScrolled ? 28 : 24,
       offset: Offset(0, isScrolled ? 8 : 6),
@@ -94,11 +92,7 @@ class LiquidGlassTheme {
   static const LinearGradient bubbleGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      bubbleMagenta,
-      bubbleBlue,
-      bubbleGreen,
-    ],
+    colors: [bubbleMagenta, bubbleBlue, bubbleGreen],
     stops: [0.0, 0.48, 1.0],
   );
 
@@ -106,11 +100,7 @@ class LiquidGlassTheme {
   static const LinearGradient bubbleGradientHorizontal = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [
-      bubbleMagenta,
-      bubbleBlue,
-      bubbleGreen,
-    ],
+    colors: [bubbleMagenta, bubbleBlue, bubbleGreen],
     stops: [0.0, 0.48, 1.0],
   );
 
@@ -130,7 +120,7 @@ class LiquidGlassTheme {
       Color(0xFF917EED), // 0.132: Periwinkle inflection point
       Color(0xFF5580E8), // 0.176: Royal blue ease-out
       Color(0xFF1781E6), // 0.220: Zero-slope entry into Bubble Blue
-      bubbleBlue,        // 0.800: Solid Bubble Blue core through body
+      bubbleBlue, // 0.800: Solid Bubble Blue core through body
       Color(0xFF1688DE), // 0.840: Deep blue ease-in towards green
       Color(0xFF1598C9), // 0.880: Ocean teal inflection
       Color(0xFF13A8AD), // 0.920: Soft seafoam
@@ -166,7 +156,7 @@ class LiquidGlassTheme {
               Color(0xFFD77AF6), // 0.125: Non-linear ease-in
               Color(0xFFAA7DF0), // 0.250: Soft lavender inflection
               Color(0xFF6580E9), // 0.375: Royal periwinkle ease-out
-              bubbleBlue,        // 0.500: Electric Bubble blue core
+              bubbleBlue, // 0.500: Electric Bubble blue core
               Color(0xFF168CDA), // 0.625: Cerulean ease-in
               Color(0xFF14A0BC), // 0.750: Ocean teal inflection
               Color(0xFF11B296), // 0.875: Soft seafoam ease-out
@@ -195,9 +185,9 @@ class LiquidGlassTheme {
     end: Alignment.bottomRight,
     colors: [
       Color(0xFFF0ABFC), // Luminous iridescent lavender highlight
-      bubbleMagenta,     // #C913B9 Signature magenta
-      bubbleBlue,        // #1781E6 Bubble blue
-      bubbleGreen,       // #01E762 Neon spring green
+      bubbleMagenta, // #C913B9 Signature magenta
+      bubbleBlue, // #1781E6 Bubble blue
+      bubbleGreen, // #01E762 Neon spring green
     ],
     stops: [0.0, 0.28, 0.68, 1.0],
   );
@@ -233,9 +223,9 @@ class LiquidGlassTheme {
       colors: const [
         Color(0xFFFFFFFF), // Specular light highlight center
         Color(0xFFF472B6), // Radiant pink-magenta bloom
-        bubbleMagenta,     // Signature bubble magenta
-        bubbleBlue,        // Electric blue core
-        bubbleGreen,       // Spring green refraction
+        bubbleMagenta, // Signature bubble magenta
+        bubbleBlue, // Electric blue core
+        bubbleGreen, // Spring green refraction
       ],
       stops: const [0.0, 0.18, 0.45, 0.76, 1.0],
     );
@@ -299,14 +289,16 @@ class LiquidGlassTheme {
     int intermediateSamplesPerSegment = 3,
   }) {
     if (colors.length < 2) {
-      return LinearGradient(begin: begin, end: end, colors: colors, stops: stops);
+      return LinearGradient(
+        begin: begin,
+        end: end,
+        colors: colors,
+        stops: stops,
+      );
     }
 
-    final keyStops = stops ??
-        List.generate(
-          colors.length,
-          (i) => i / (colors.length - 1),
-        );
+    final keyStops =
+        stops ?? List.generate(colors.length, (i) => i / (colors.length - 1));
 
     assert(colors.length == keyStops.length);
 
@@ -376,18 +368,19 @@ class LiquidGlassTheme {
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF1B1822),
-            Color(0xFF12141A),
-          ],
+          colors: [Color(0xFF1B1822), Color(0xFF12141A)],
         );
       }
       return LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          const Color(0xFF1E1A26).withValues(alpha: (0.92 * opacityMultiplier).clamp(0.0, 1.0)),
-          const Color(0xFF11141E).withValues(alpha: (0.84 * opacityMultiplier).clamp(0.0, 1.0)),
+          const Color(
+            0xFF1E1A26,
+          ).withValues(alpha: (0.92 * opacityMultiplier).clamp(0.0, 1.0)),
+          const Color(
+            0xFF11141E,
+          ).withValues(alpha: (0.84 * opacityMultiplier).clamp(0.0, 1.0)),
         ],
       );
     } else {
@@ -395,18 +388,19 @@ class LiquidGlassTheme {
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Colors.white,
-            Color(0xFFF9FAFD),
-          ],
+          colors: [Colors.white, Color(0xFFF9FAFD)],
         );
       }
       return LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          Colors.white.withValues(alpha: (0.92 * opacityMultiplier).clamp(0.0, 1.0)),
-          const Color(0xFFF6F8FC).withValues(alpha: (0.80 * opacityMultiplier).clamp(0.0, 1.0)),
+          Colors.white.withValues(
+            alpha: (0.92 * opacityMultiplier).clamp(0.0, 1.0),
+          ),
+          const Color(
+            0xFFF6F8FC,
+          ).withValues(alpha: (0.80 * opacityMultiplier).clamp(0.0, 1.0)),
         ],
       );
     }
@@ -423,13 +417,19 @@ class LiquidGlassTheme {
     return Colors.white;
   }
 
-
   /// Crisp specular border color with delicate glass reflection tint
-  static Color specularBorderColor(BuildContext context, {double opacityMultiplier = 1.0}) {
+  static Color specularBorderColor(
+    BuildContext context, {
+    double opacityMultiplier = 1.0,
+  }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return isDark
-        ? Colors.white.withValues(alpha: (0.16 * opacityMultiplier).clamp(0.0, 1.0))
-        : (opacityMultiplier > 1.2 ? const Color(0xFFCBD5E1) : const Color(0xFFE2E8F0));
+        ? Colors.white.withValues(
+            alpha: (0.16 * opacityMultiplier).clamp(0.0, 1.0),
+          )
+        : (opacityMultiplier > 1.2
+              ? const Color(0xFFCBD5E1)
+              : const Color(0xFFE2E8F0));
   }
 
   /// Crisp specular glass border
@@ -602,8 +602,11 @@ class BubblePillPainter extends CustomPainter {
     canvas.drawRRect(innerRRect, baseGlassPaint);
 
     // 2. Iridescent thin-film prismatic sheen (Soap bubble texture across body)
-    final effectiveSheen = iridescentSheenGradient ??
-        LiquidGlassTheme.bubbleReflectionGradient(opacity: isDark ? 0.10 : 0.08);
+    final effectiveSheen =
+        iridescentSheenGradient ??
+        LiquidGlassTheme.bubbleReflectionGradient(
+          opacity: isDark ? 0.10 : 0.08,
+        );
     final sheenPaint = Paint()
       ..style = PaintingStyle.fill
       ..shader = effectiveSheen.createShader(rect);
@@ -614,7 +617,12 @@ class BubblePillPainter extends CustomPainter {
     final glintHeight = (size.height * 0.38).clamp(8.0, 22.0);
     final glintLeft = (size.width - glintWidth) / 2;
     final glintTop = strokeWidth + 1.2;
-    final glintRect = Rect.fromLTWH(glintLeft, glintTop, glintWidth, glintHeight);
+    final glintRect = Rect.fromLTWH(
+      glintLeft,
+      glintTop,
+      glintWidth,
+      glintHeight,
+    );
     final glintRRect = RRect.fromRectAndRadius(
       glintRect,
       Radius.circular(glintHeight / 2),
@@ -637,7 +645,12 @@ class BubblePillPainter extends CustomPainter {
     final bounceHeight = (size.height * 0.22).clamp(5.0, 14.0);
     final bounceLeft = (size.width - bounceWidth) / 2;
     final bounceTop = size.height - strokeWidth - bounceHeight - 1.2;
-    final bounceRect = Rect.fromLTWH(bounceLeft, bounceTop, bounceWidth, bounceHeight);
+    final bounceRect = Rect.fromLTWH(
+      bounceLeft,
+      bounceTop,
+      bounceWidth,
+      bounceHeight,
+    );
     final bounceRRect = RRect.fromRectAndRadius(
       bounceRect,
       Radius.circular(bounceHeight / 2),
@@ -713,7 +726,9 @@ class LiquidBubblePill extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
           BoxShadow(
-            color: LiquidGlassTheme.bubbleBlue.withValues(alpha: isDark ? 0.15 : 0.06),
+            color: LiquidGlassTheme.bubbleBlue.withValues(
+              alpha: isDark ? 0.15 : 0.06,
+            ),
             blurRadius: 12,
             offset: const Offset(0, 1),
           ),
@@ -780,7 +795,8 @@ class LiquidContinuousChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveShadow = boxShadow ??
+    final effectiveShadow =
+        boxShadow ??
         [
           BoxShadow(
             color: isSelected
@@ -791,17 +807,19 @@ class LiquidContinuousChatBubble extends StatelessWidget {
           ),
         ];
 
-    final effectiveBorder = border ??
+    final effectiveBorder =
+        border ??
         Border.all(
           color: isSelected
               ? Theme.of(context).colorScheme.primary
               : (isDark
-                  ? Colors.white.withValues(alpha: 0.16)
-                  : Colors.white.withValues(alpha: 0.30)),
+                    ? Colors.white.withValues(alpha: 0.16)
+                    : Colors.white.withValues(alpha: 0.30)),
           width: isSelected ? 2.0 : 1.0,
         );
 
-    final repaintListenable = scrollController ?? Scrollable.maybeOf(context)?.position;
+    final repaintListenable =
+        scrollController ?? Scrollable.maybeOf(context)?.position;
 
     return Container(
       decoration: BoxDecoration(
@@ -819,7 +837,9 @@ class LiquidContinuousChatBubble extends StatelessWidget {
             repaint: repaintListenable,
           ),
           child: Padding(
-            padding: padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding:
+                padding ??
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: child,
           ),
         ),
@@ -850,7 +870,10 @@ class _LiquidContinuousGradientPainter extends CustomPainter {
     final screenSize = mediaQuery.size;
     final topPadding = mediaQuery.padding.top + kToolbarHeight;
     final bottomPadding = mediaQuery.padding.bottom + 70.0;
-    final usableHeight = (screenSize.height - topPadding - bottomPadding).clamp(200.0, 3000.0);
+    final usableHeight = (screenSize.height - topPadding - bottomPadding).clamp(
+      200.0,
+      3000.0,
+    );
 
     Offset globalPos = Offset.zero;
     try {
@@ -887,8 +910,16 @@ class _LiquidContinuousGradientPainter extends CustomPainter {
     final glintHeight = (size.height * 0.32).clamp(4.0, 14.0);
     final glintLeft = (size.width - glintWidth) / 2;
     const glintTop = 1.0;
-    final glintRect = Rect.fromLTWH(glintLeft, glintTop, glintWidth, glintHeight);
-    final glintRRect = RRect.fromRectAndRadius(glintRect, const Radius.circular(8.0));
+    final glintRect = Rect.fromLTWH(
+      glintLeft,
+      glintTop,
+      glintWidth,
+      glintHeight,
+    );
+    final glintRRect = RRect.fromRectAndRadius(
+      glintRect,
+      const Radius.circular(8.0),
+    );
 
     final glintPaint = Paint()
       ..style = PaintingStyle.fill
@@ -905,7 +936,8 @@ class _LiquidContinuousGradientPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _LiquidContinuousGradientPainter oldDelegate) {
-    return oldDelegate.isDark != isDark || oldDelegate.borderRadius != borderRadius;
+    return oldDelegate.isDark != isDark ||
+        oldDelegate.borderRadius != borderRadius;
   }
 }
 
@@ -940,12 +972,13 @@ class BubbleGlassIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final effectiveGradient = gradient ??
+    final effectiveGradient =
+        gradient ??
         (color != null
             ? LinearGradient(colors: [color!, color!])
             : (isDark
-                ? LiquidGlassTheme.bubbleIconGradient
-                : LiquidGlassTheme.bubbleIconLightGradient));
+                  ? LiquidGlassTheme.bubbleIconGradient
+                  : LiquidGlassTheme.bubbleIconLightGradient));
 
     Widget iconGlyph = Stack(
       alignment: Alignment.center,
@@ -955,10 +988,14 @@ class BubbleGlassIcon extends StatelessWidget {
           Transform.translate(
             offset: const Offset(0, 1),
             child: ShaderMask(
-              shaderCallback: (bounds) => effectiveGradient.createShader(bounds),
+              shaderCallback: (bounds) =>
+                  effectiveGradient.createShader(bounds),
               blendMode: BlendMode.srcIn,
               child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: size * 0.18, sigmaY: size * 0.18),
+                imageFilter: ImageFilter.blur(
+                  sigmaX: size * 0.18,
+                  sigmaY: size * 0.18,
+                ),
                 child: Opacity(
                   opacity: isDark ? 0.45 : 0.20,
                   child: Icon(icon, size: size, color: Colors.white),
@@ -1014,7 +1051,9 @@ class BubbleGlassIcon extends StatelessWidget {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: LiquidGlassTheme.bubbleBlue.withValues(alpha: isDark ? 0.22 : 0.08),
+              color: LiquidGlassTheme.bubbleBlue.withValues(
+                alpha: isDark ? 0.22 : 0.08,
+              ),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -1149,10 +1188,7 @@ class LiquidGlassContainer extends StatelessWidget {
           borderRadius: borderRadius as BorderRadius?,
           boxShadow: effectiveShadows,
         ),
-        child: ClipRRect(
-          borderRadius: borderRadius,
-          child: content,
-        ),
+        child: ClipRRect(borderRadius: borderRadius, child: content),
       );
     }
 
@@ -1259,7 +1295,10 @@ class _LiquidGlassCardState extends State<LiquidGlassCard> {
           child: (!widget.hasBlur || widget.blur <= 0)
               ? cardBody
               : BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: widget.blur, sigmaY: widget.blur),
+                  filter: ImageFilter.blur(
+                    sigmaX: widget.blur,
+                    sigmaY: widget.blur,
+                  ),
                   child: cardBody,
                 ),
         ),
@@ -1308,12 +1347,14 @@ class LiquidGlassPill extends StatelessWidget {
       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
       letterSpacing: 0.15,
       color: isSelected
-          ? (activeTextColor ?? (isDark ? Colors.white : const Color(0xFF0F172A)))
+          ? (activeTextColor ??
+                (isDark ? Colors.white : const Color(0xFF0F172A)))
           : (isDark ? const Color(0xFFA1A1AA) : const Color(0xFF475569)),
     );
 
     final bg = isSelected
-        ? (activeColor ?? LiquidGlassTheme.pillBackground(context, isSelected: true))
+        ? (activeColor ??
+              LiquidGlassTheme.pillBackground(context, isSelected: true))
         : LiquidGlassTheme.pillBackground(context, isSelected: false);
 
     final border = Border.all(
@@ -1339,7 +1380,8 @@ class LiquidGlassPill extends StatelessWidget {
           borderRadius: BorderRadius.circular(height / 2),
           border: border,
         ),
-        child: customContent ??
+        child:
+            customContent ??
             Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -1351,8 +1393,8 @@ class LiquidGlassPill extends StatelessWidget {
                 if (label != null)
                   Flexible(
                     child: Text(
-                    label!,
-                    style: textStyle,
+                      label!,
+                      style: textStyle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1389,16 +1431,14 @@ class LiquidGlassButtonPainter extends CustomPainter {
     if (size.width <= 0 || size.height <= 0) return;
 
     final rect = Offset.zero & size;
-    final rrect = RRect.fromRectAndRadius(
-      rect,
-      Radius.circular(radius),
-    );
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(radius));
     final innerRRect = RRect.fromRectAndRadius(
       rect.deflate(strokeWidth),
       Radius.circular((radius - strokeWidth).clamp(0.0, double.infinity)),
     );
 
-    final isCustom = gradient != LiquidGlassTheme.bubbleIconGradient &&
+    final isCustom =
+        gradient != LiquidGlassTheme.bubbleIconGradient &&
         gradient != LiquidGlassTheme.bubbleGradient &&
         gradient != LiquidGlassTheme.bubbleBlueGradient;
 
@@ -1422,7 +1462,9 @@ class LiquidGlassButtonPainter extends CustomPainter {
             : [
                 Colors.white.withValues(alpha: isDark ? 0.10 : 0.14),
                 const Color(0xFFE879F9).withValues(alpha: isDark ? 0.05 : 0.04),
-                LiquidGlassTheme.bubbleBlue.withValues(alpha: isDark ? 0.05 : 0.04),
+                LiquidGlassTheme.bubbleBlue.withValues(
+                  alpha: isDark ? 0.05 : 0.04,
+                ),
                 const Color(0xFF10B981).withValues(alpha: isDark ? 0.04 : 0.03),
                 Colors.white.withValues(alpha: isDark ? 0.05 : 0.08),
               ],
@@ -1435,7 +1477,12 @@ class LiquidGlassButtonPainter extends CustomPainter {
     final glintHeight = (size.height * 0.36).clamp(5.0, 18.0);
     final glintLeft = (size.width - glintWidth) / 2;
     final glintTop = strokeWidth + 0.8;
-    final glintRect = Rect.fromLTWH(glintLeft, glintTop, glintWidth, glintHeight);
+    final glintRect = Rect.fromLTWH(
+      glintLeft,
+      glintTop,
+      glintWidth,
+      glintHeight,
+    );
     final glintRadius = (radius * 0.7).clamp(4.0, glintHeight / 2);
     final glintRRect = RRect.fromRectAndRadius(
       glintRect,
@@ -1460,7 +1507,12 @@ class LiquidGlassButtonPainter extends CustomPainter {
     final bounceHeight = (size.height * 0.20).clamp(3.0, 10.0);
     final bounceLeft = (size.width - bounceWidth) / 2;
     final bounceTop = size.height - strokeWidth - bounceHeight - 0.8;
-    final bounceRect = Rect.fromLTWH(bounceLeft, bounceTop, bounceWidth, bounceHeight);
+    final bounceRect = Rect.fromLTWH(
+      bounceLeft,
+      bounceTop,
+      bounceWidth,
+      bounceHeight,
+    );
     final bounceRadius = (radius * 0.5).clamp(3.0, bounceHeight / 2);
     final bounceRRect = RRect.fromRectAndRadius(
       bounceRect,
@@ -1478,7 +1530,9 @@ class LiquidGlassButtonPainter extends CustomPainter {
                 Colors.white.withValues(alpha: 0.0),
               ]
             : [
-                LiquidGlassTheme.bubbleBlue.withValues(alpha: isDark ? 0.12 : 0.08),
+                LiquidGlassTheme.bubbleBlue.withValues(
+                  alpha: isDark ? 0.12 : 0.08,
+                ),
                 Colors.white.withValues(alpha: 0.0),
               ],
         stops: const [0.0, 1.0],
@@ -1509,20 +1563,20 @@ class LiquidGlassButtonPainter extends CustomPainter {
                 Colors.white.withValues(alpha: 0.20),
               ]
             : (isDark
-                ? [
-                    Colors.white.withValues(alpha: 0.60),
-                    const Color(0xFFE879F9).withValues(alpha: 0.15),
-                    LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.20),
-                    const Color(0xFF10B981).withValues(alpha: 0.16),
-                    Colors.white.withValues(alpha: 0.12),
-                  ]
-                : [
-                    Colors.white.withValues(alpha: 0.72),
-                    const Color(0xFFE879F9).withValues(alpha: 0.12),
-                    LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.18),
-                    const Color(0xFF10B981).withValues(alpha: 0.14),
-                    Colors.white.withValues(alpha: 0.14),
-                  ]),
+                  ? [
+                      Colors.white.withValues(alpha: 0.60),
+                      const Color(0xFFE879F9).withValues(alpha: 0.15),
+                      LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.20),
+                      const Color(0xFF10B981).withValues(alpha: 0.16),
+                      Colors.white.withValues(alpha: 0.12),
+                    ]
+                  : [
+                      Colors.white.withValues(alpha: 0.72),
+                      const Color(0xFFE879F9).withValues(alpha: 0.12),
+                      LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.18),
+                      const Color(0xFF10B981).withValues(alpha: 0.14),
+                      Colors.white.withValues(alpha: 0.14),
+                    ]),
         stops: isCustom ? const [0.0, 1.0] : const [0.0, 0.15, 0.50, 0.85, 1.0],
       ).createShader(rect);
     canvas.drawRRect(borderRRect, borderPaint);
@@ -1582,12 +1636,15 @@ class _LiquidGlassButtonState extends State<LiquidGlassButton> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final effectiveHeight = widget.height ?? 44.0;
-    final effectivePadding = widget.padding ??
-        EdgeInsets.symmetric(
-          horizontal: effectiveHeight <= 38 ? 12 : 16,
-        );
+    final effectivePadding =
+        widget.padding ??
+        EdgeInsets.symmetric(horizontal: effectiveHeight <= 38 ? 12 : 16);
 
-    final primaryTextColor = widget.customTextColor ?? LiquidGlassTheme.primaryTextColor(context);
+    final primaryTextColor =
+        widget.customTextColor ??
+        (widget.isBrandGradient || widget.customGradient != null
+            ? LiquidGlassTheme.primaryTextColor(context)
+            : LiquidGlassTheme.textPrimary(context));
 
     Widget buttonContent = Row(
       mainAxisSize: MainAxisSize.min,
@@ -1599,14 +1656,14 @@ class _LiquidGlassButtonState extends State<LiquidGlassButton> {
             height: 16,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: widget.isPrimary ? primaryTextColor : (widget.customTextColor ?? (isDark ? Colors.white : Colors.black87)),
+              color: widget.isPrimary
+                  ? primaryTextColor
+                  : (widget.customTextColor ??
+                        (isDark ? Colors.white : Colors.black87)),
             ),
           )
         else ...[
-          if (widget.icon != null) ...[
-            widget.icon!,
-            const SizedBox(width: 6),
-          ],
+          if (widget.icon != null) ...[widget.icon!, const SizedBox(width: 6)],
           Flexible(
             child: Text(
               widget.label,
@@ -1619,7 +1676,8 @@ class _LiquidGlassButtonState extends State<LiquidGlassButton> {
                 letterSpacing: 0.1,
                 color: widget.isPrimary
                     ? primaryTextColor
-                    : (widget.customTextColor ?? (isDark ? Colors.white : const Color(0xFF111827))),
+                    : (widget.customTextColor ??
+                          (isDark ? Colors.white : const Color(0xFF111827))),
               ),
             ),
           ),
@@ -1628,14 +1686,40 @@ class _LiquidGlassButtonState extends State<LiquidGlassButton> {
     );
 
     final r = BorderRadius.circular(widget.borderRadius);
+    Widget primaryMaterial() => Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: r,
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onPressed != null && !widget.isLoading
+            ? () {
+                SafeHaptics.lightImpact();
+                widget.onPressed!();
+              }
+            : null,
+        child: Padding(
+          padding: effectivePadding,
+          child: Center(child: buttonContent),
+        ),
+      ),
+    );
 
     if (widget.isPrimary) {
-      final effectiveGradient = widget.customGradient ??
-          (widget.isBrandGradient
-              ? LiquidGlassTheme.primaryLiquidGradient(context: context)
-              : LiquidGlassTheme.bubbleBlueGradient);
-      final shadowColor = widget.customBackgroundColor ??
-          (widget.customGradient != null ? const Color(0xFFE53935) : LiquidGlassTheme.bubbleBlue);
+      final keepsGradient =
+          widget.isBrandGradient || widget.customGradient != null;
+      final effectiveGradient =
+          widget.customGradient ??
+          LiquidGlassTheme.primaryLiquidGradient(context: context);
+      final backgroundColor =
+          widget.customBackgroundColor ??
+          (isDark ? const Color(0xFF27272A) : Colors.white);
+      final shadowColor =
+          widget.customBackgroundColor ??
+          (widget.customGradient != null
+              ? const Color(0xFFE53935)
+              : LiquidGlassTheme.bubbleBlue);
 
       return AnimatedScale(
         scale: _isPressed ? 0.975 : 1.0,
@@ -1651,38 +1735,36 @@ class _LiquidGlassButtonState extends State<LiquidGlassButton> {
                 blurRadius: 5,
                 offset: const Offset(0, 2),
               ),
-              BoxShadow(
-                color: shadowColor.withValues(alpha: isDark ? 0.08 : 0.04),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              ),
+              if (keepsGradient)
+                BoxShadow(
+                  color: shadowColor.withValues(alpha: isDark ? 0.08 : 0.04),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
             ],
           ),
-          child: CustomPaint(
-            painter: LiquidGlassButtonPainter(
-              gradient: effectiveGradient,
-              radius: widget.borderRadius,
-              isDark: isDark,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: keepsGradient ? null : backgroundColor,
+              borderRadius: r,
+              border: keepsGradient
+                  ? null
+                  : Border.all(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.12)
+                          : const Color(0xFFE2E8F0),
+                    ),
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: r,
-                onTapDown: (_) => setState(() => _isPressed = true),
-                onTapUp: (_) => setState(() => _isPressed = false),
-                onTapCancel: () => setState(() => _isPressed = false),
-                onTap: widget.onPressed != null && !widget.isLoading
-                    ? () {
-                        SafeHaptics.lightImpact();
-                        widget.onPressed!();
-                      }
-                    : null,
-                child: Padding(
-                  padding: effectivePadding,
-                  child: Center(child: buttonContent),
-                ),
-              ),
-            ),
+            child: keepsGradient
+                ? CustomPaint(
+                    painter: LiquidGlassButtonPainter(
+                      gradient: effectiveGradient,
+                      radius: widget.borderRadius,
+                      isDark: isDark,
+                    ),
+                    child: primaryMaterial(),
+                  )
+                : primaryMaterial(),
           ),
         ),
       );
@@ -1779,11 +1861,16 @@ class _LiquidGlassIconButtonState extends State<LiquidGlassIconButton> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final effectiveGradient = widget.gradient ??
+    final effectiveGradient =
+        widget.gradient ??
         (widget.isPrimary
             ? LiquidGlassTheme.bubbleBlueGradient
             : LiquidGlassTheme.glassGradient(context));
-    final effectiveIconColor = widget.iconColor ?? (widget.isPrimary ? Colors.white : LiquidGlassTheme.textPrimary(context));
+    final effectiveIconColor =
+        widget.iconColor ??
+        (widget.isPrimary
+            ? Colors.white
+            : LiquidGlassTheme.textPrimary(context));
 
     Widget content;
     if (widget.isLoading) {
@@ -1807,7 +1894,11 @@ class _LiquidGlassIconButtonState extends State<LiquidGlassIconButton> {
 
     Widget button;
     if (widget.isPrimary) {
-      final shadowColor = widget.color ?? (widget.gradient != null ? const Color(0xFFE53935) : LiquidGlassTheme.bubbleBlue);
+      final shadowColor =
+          widget.color ??
+          (widget.gradient != null
+              ? const Color(0xFFE53935)
+              : LiquidGlassTheme.bubbleBlue);
       button = Container(
         width: widget.size,
         height: widget.size,
@@ -1974,15 +2065,14 @@ class LiquidGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final topPadding = MediaQuery.paddingOf(context).top;
 
-    final canGoBack = automaticallyImplyLeading &&
+    final canGoBack =
+        automaticallyImplyLeading &&
         (Navigator.of(context).canPop() ||
             context.canPop() ||
             (rootNavigatorKey.currentState?.canPop() ?? false));
 
-    final Widget? leadingWidget = leading ??
-        (canGoBack
-            ? const BubbleBackButton()
-            : null);
+    final Widget? leadingWidget =
+        leading ?? (canGoBack ? const BubbleBackButton() : null);
 
     final Widget? titleWidget = title != null
         ? DefaultTextStyle(
@@ -2013,7 +2103,10 @@ class LiquidGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
             child: Container(
               decoration: BoxDecoration(
-                gradient: LiquidGlassTheme.glassGradient(context, opacityMultiplier: 0.95),
+                gradient: LiquidGlassTheme.glassGradient(
+                  context,
+                  opacityMultiplier: 0.95,
+                ),
               ),
               child: Stack(
                 children: [
@@ -2036,7 +2129,9 @@ class LiquidGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
                               if (titleWidget != null)
                                 Expanded(
                                   child: Align(
-                                    alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
+                                    alignment: centerTitle
+                                        ? Alignment.center
+                                        : Alignment.centerLeft,
                                     child: titleWidget,
                                   ),
                                 )
@@ -2135,7 +2230,9 @@ class LiquidGlassSearchBar extends StatelessWidget {
                 hintText: hintText,
                 hintStyle: TextStyle(
                   fontSize: 14,
-                  color: isDark ? const Color(0xFF71717A) : const Color(0xFF64748B),
+                  color: isDark
+                      ? const Color(0xFF71717A)
+                      : const Color(0xFF64748B),
                 ),
                 border: InputBorder.none,
                 isDense: true,
@@ -2205,10 +2302,7 @@ Future<T?> showBubbleDialog<T>({
       );
       return ScaleTransition(
         scale: Tween<double>(begin: 0.88, end: 1.0).animate(curved),
-        child: FadeTransition(
-          opacity: curved,
-          child: child,
-        ),
+        child: FadeTransition(opacity: curved, child: child),
       );
     },
   );
@@ -2378,20 +2472,29 @@ Future<T?> showLiquidGlassOptionSheet<T>({
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? (isDark
-                                      ? Colors.white.withValues(alpha: 0.12)
-                                      : Colors.black.withValues(alpha: 0.06))
+                                        ? Colors.white.withValues(alpha: 0.12)
+                                        : Colors.black.withValues(alpha: 0.06))
                                   : (isDark
-                                      ? Colors.white.withValues(alpha: 0.03)
-                                      : Colors.black.withValues(alpha: 0.02)),
+                                        ? Colors.white.withValues(alpha: 0.03)
+                                        : Colors.black.withValues(alpha: 0.02)),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isSelected
-                                    ? LiquidGlassTheme.specularBorderColor(ctx, opacityMultiplier: 1.5)
-                                    : LiquidGlassTheme.specularBorderColor(ctx, opacityMultiplier: 0.4),
+                                    ? LiquidGlassTheme.specularBorderColor(
+                                        ctx,
+                                        opacityMultiplier: 1.5,
+                                      )
+                                    : LiquidGlassTheme.specularBorderColor(
+                                        ctx,
+                                        opacityMultiplier: 0.4,
+                                      ),
                                 width: isSelected ? 1.4 : 1.0,
                               ),
                             ),
@@ -2402,19 +2505,28 @@ Future<T?> showLiquidGlassOptionSheet<T>({
                                     width: 38,
                                     height: 38,
                                     decoration: BoxDecoration(
-                                      color: (opt.iconColor ??
-                                              (isSelected
-                                                  ? LiquidGlassTheme.bubbleBlue
-                                                  : (isDark ? Colors.white70 : Colors.black87)))
-                                          .withValues(alpha: isDark ? 0.18 : 0.10),
+                                      color:
+                                          (opt.iconColor ??
+                                                  (isSelected
+                                                      ? LiquidGlassTheme
+                                                            .bubbleBlue
+                                                      : (isDark
+                                                            ? Colors.white70
+                                                            : Colors.black87)))
+                                              .withValues(
+                                                alpha: isDark ? 0.18 : 0.10,
+                                              ),
                                       borderRadius: BorderRadius.circular(11),
                                     ),
                                     child: Icon(
                                       opt.icon,
-                                      color: opt.iconColor ??
+                                      color:
+                                          opt.iconColor ??
                                           (isSelected
                                               ? LiquidGlassTheme.bubbleBlue
-                                              : (isDark ? Colors.white70 : Colors.black87)),
+                                              : (isDark
+                                                    ? Colors.white70
+                                                    : Colors.black87)),
                                       size: 19,
                                     ),
                                   ),
@@ -2422,14 +2534,19 @@ Future<T?> showLiquidGlassOptionSheet<T>({
                                 ],
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         opt.title,
                                         style: TextStyle(
-                                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                          fontWeight: isSelected
+                                              ? FontWeight.w600
+                                              : FontWeight.w500,
                                           fontSize: 15,
-                                          color: LiquidGlassTheme.textPrimary(ctx),
+                                          color: LiquidGlassTheme.textPrimary(
+                                            ctx,
+                                          ),
                                         ),
                                       ),
                                       if (opt.subtitle != null) ...[
@@ -2438,7 +2555,10 @@ Future<T?> showLiquidGlassOptionSheet<T>({
                                           opt.subtitle!,
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: LiquidGlassTheme.textSecondary(ctx),
+                                            color:
+                                                LiquidGlassTheme.textSecondary(
+                                                  ctx,
+                                                ),
                                           ),
                                         ),
                                       ],
@@ -2446,10 +2566,14 @@ Future<T?> showLiquidGlassOptionSheet<T>({
                                   ),
                                 ),
                                 Icon(
-                                  isSelected ? PhosphorIconsFill.checkCircle : PhosphorIconsRegular.circle,
+                                  isSelected
+                                      ? PhosphorIconsFill.checkCircle
+                                      : PhosphorIconsRegular.circle,
                                   color: isSelected
                                       ? LiquidGlassTheme.bubbleBlue
-                                      : (isDark ? Colors.white24 : Colors.black26),
+                                      : (isDark
+                                            ? Colors.white24
+                                            : Colors.black26),
                                   size: 21,
                                 ),
                               ],

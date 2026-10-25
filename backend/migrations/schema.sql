@@ -1,15 +1,5 @@
--- ==============================================================================
--- BUBBLE DATABASE CONSOLIDATED FULL SCHEMA
--- Latest Version: Migration 33 (Consolidated Clean State)
--- Target Database: PostgreSQL 14+
--- ==============================================================================
-
--- Enable UUID extension for gen_random_uuid() if on older Postgres versions
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- ==============================================================================
--- 1. USERS (Profiles & Core Account Data)
--- ==============================================================================
 CREATE TABLE users (
     id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     username            VARCHAR(50) UNIQUE NOT NULL,
@@ -26,9 +16,6 @@ CREATE TABLE users (
     CONSTRAINT strict_username_format CHECK (username ~ '^[a-z0-9_]+$')
 );
 
--- ==============================================================================
--- 2. AUTHENTICATION & MULTI-PROVIDER LOGINS
--- ==============================================================================
 CREATE TABLE auth (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id       UUID UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -48,9 +35,6 @@ CREATE TABLE auth_providers (
     UNIQUE (provider, identifier)
 );
 
--- ==============================================================================
--- 3. OTP VERIFICATION CODES (Registration & Login)
--- ==============================================================================
 CREATE TABLE otp_codes (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     provider      VARCHAR(50) NOT NULL,
@@ -67,9 +51,6 @@ CREATE TABLE otp_codes (
 
 CREATE INDEX idx_otp_identifier ON otp_codes(identifier);
 
--- ==============================================================================
--- 4. SESSIONS (Devices, Multi-Login, Push Tokens)
--- ==============================================================================
 CREATE TABLE sessions (
     id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id        UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -83,9 +64,6 @@ CREATE TABLE sessions (
 
 CREATE INDEX idx_sessions_user_id ON sessions(user_id);
 
--- ==============================================================================
--- 5. USER SETTINGS (Privacy, Notification Filters, Reaction Presets)
--- ==============================================================================
 CREATE TABLE user_settings (
     user_id                       UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     notification_state            VARCHAR(20) DEFAULT 'AUTOMATIC',
@@ -108,9 +86,6 @@ CREATE TABLE user_settings (
     CONSTRAINT chk_allow_chats CHECK (allow_new_chats IN ('ALL_FRIENDS', 'BEST_FRIENDS', 'NOBODY'))
 );
 
--- ==============================================================================
--- 6. NETWORKS (Bubbles & Personal Feeds)
--- ==============================================================================
 CREATE TABLE networks (
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name        VARCHAR(100) UNIQUE,
@@ -124,12 +99,8 @@ CREATE TABLE networks (
     CONSTRAINT strict_network_name_format CHECK (name ~ '^[a-z0-9_]+$')
 );
 
--- Enforce maximum of 1 personal network ('PERSON') per user
 CREATE UNIQUE INDEX unique_person_network_per_user ON networks(owner_id) WHERE type = 'PERSON';
 
--- ==============================================================================
--- 7. NETWORK MEMBERS & INVITATIONS
--- ==============================================================================
 CREATE TABLE network_members (
     user_id               UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     network_id            UUID NOT NULL REFERENCES networks(id) ON DELETE CASCADE,
@@ -153,9 +124,6 @@ CREATE TABLE network_invitations (
     CONSTRAINT network_invitations_status_check CHECK (status IN ('pending', 'accepted', 'declined'))
 );
 
--- ==============================================================================
--- 8. FRIENDSHIPS (Person-to-Person Relationships)
--- ==============================================================================
 CREATE TABLE friendships (
     source_user_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     target_user_id           UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -175,9 +143,6 @@ CREATE TABLE friendships (
     CONSTRAINT friendships_invite_state_check CHECK (invite_state IN ('AUTOMATIC', 'ON', 'OFF'))
 );
 
--- ==============================================================================
--- 9. CONVERSATIONS (Direct 1-on-1 Messages)
--- ==============================================================================
 CREATE TABLE conversations (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user1_id   UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -189,9 +154,6 @@ CREATE TABLE conversations (
     CONSTRAINT chk_users_order CHECK (user1_id < user2_id)
 );
 
--- ==============================================================================
--- 10. POSTS (Content Feed Items)
--- ==============================================================================
 CREATE TABLE posts (
     id                     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id                UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -207,9 +169,6 @@ CREATE TABLE posts (
     CONSTRAINT chk_post_repl_notif CHECK (replies_notification IN ('AUTOMATIC', 'ON', 'OFF'))
 );
 
--- ==============================================================================
--- 11. POST MEDIA (Images / Videos)
--- ==============================================================================
 CREATE TABLE post_media (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     post_id    UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
@@ -222,9 +181,6 @@ CREATE TABLE post_media (
 
 CREATE INDEX idx_post_media_post_id ON post_media(post_id);
 
--- ==============================================================================
--- 12. POST INTERACTIONS (Reactions, Saves, Shares, Views)
--- ==============================================================================
 CREATE TABLE post_interactions (
     user_id        UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     post_id        UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
@@ -238,9 +194,6 @@ CREATE TABLE post_interactions (
     PRIMARY KEY (user_id, post_id)
 );
 
--- ==============================================================================
--- 13. REPLIES (Threaded Post Comments)
--- ==============================================================================
 CREATE TABLE replies (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     post_id         UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
@@ -250,9 +203,6 @@ CREATE TABLE replies (
     created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- ==============================================================================
--- 14. REPLY INTERACTIONS (Reactions to Comments)
--- ==============================================================================
 CREATE TABLE reply_interactions (
     user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     reply_id   UUID NOT NULL REFERENCES replies(id) ON DELETE CASCADE,
@@ -263,9 +213,6 @@ CREATE TABLE reply_interactions (
     PRIMARY KEY (user_id, reply_id)
 );
 
--- ==============================================================================
--- 15. SCHEMA MIGRATIONS TRACKING (For golang-migrate synchronization)
--- ==============================================================================
 CREATE TABLE IF NOT EXISTS schema_migrations (
     version BIGINT PRIMARY KEY,
     dirty   BOOLEAN NOT NULL
@@ -274,4 +221,3 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 INSERT INTO schema_migrations (version, dirty)
 VALUES (33, FALSE)
 ON CONFLICT (version) DO UPDATE SET dirty = EXCLUDED.dirty;
-

@@ -22,7 +22,8 @@ class GalleryScreen extends ConsumerStatefulWidget {
   ConsumerState<GalleryScreen> createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindingObserver {
+class _GalleryScreenState extends ConsumerState<GalleryScreen>
+    with WidgetsBindingObserver {
   // Device Albums & Media
   List<AssetPathEntity> _albums = [];
   AssetPathEntity? _currentAlbum;
@@ -66,41 +67,43 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
     }
 
     final count = _selectedAssets.length;
-    ref.read(dynamicDockProvider.notifier).setSelectionMode(
-      count: count,
-      title: '$count Selected',
-      onCancel: () {
-        setState(() {
-          _selectedAssets.clear();
-        });
-      },
-      actions: [
-        DynamicDockAction(
-          icon: PhosphorIconsRegular.shareFat,
-          label: 'Share',
-          onTap: _shareSelectedAssets,
-        ),
-        DynamicDockAction(
-          icon: PhosphorIconsRegular.trash,
-          label: 'Delete',
-          isDestructive: true,
-          onTap: _deleteSelectedAssets,
-        ),
-        DynamicDockAction(
-          icon: PhosphorIconsRegular.paperPlaneRight,
-          label: 'Post ($count)',
-          isPrimary: true,
-          onTap: _goToPostPage,
-        ),
-      ],
-      popouts: [
-        DynamicDockPopoutItem(
-          icon: PhosphorIconsRegular.checkSquare,
-          label: 'Select All',
-          onTap: _selectAllAssets,
-        ),
-      ],
-    );
+    ref
+        .read(dynamicDockProvider.notifier)
+        .setSelectionMode(
+          count: count,
+          title: '$count Selected',
+          onCancel: () {
+            setState(() {
+              _selectedAssets.clear();
+            });
+          },
+          actions: [
+            DynamicDockAction(
+              icon: PhosphorIconsRegular.shareFat,
+              label: 'Share',
+              onTap: _shareSelectedAssets,
+            ),
+            DynamicDockAction(
+              icon: PhosphorIconsRegular.trash,
+              label: 'Delete',
+              isDestructive: true,
+              onTap: _deleteSelectedAssets,
+            ),
+            DynamicDockAction(
+              icon: PhosphorIconsRegular.paperPlaneRight,
+              label: 'Post ($count)',
+              isPrimary: true,
+              onTap: _goToPostPage,
+            ),
+          ],
+          popouts: [
+            DynamicDockPopoutItem(
+              icon: PhosphorIconsRegular.checkSquare,
+              label: 'Select All',
+              onTap: _selectAllAssets,
+            ),
+          ],
+        );
   }
 
   void _selectAllAssets() {
@@ -137,7 +140,10 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
         if (albums.isNotEmpty) {
           _albums = albums;
           _currentAlbum = _albums[0];
-          final media = await _currentAlbum!.getAssetListPaged(page: 0, size: 48);
+          final media = await _currentAlbum!.getAssetListPaged(
+            page: 0,
+            size: 48,
+          );
           if (mounted) {
             setState(() {
               _assets = media;
@@ -169,7 +175,8 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
           _assets = media;
         });
       }
-    } catch (_) {} finally {
+    } catch (_) {
+    } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
@@ -204,9 +211,12 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
   }
 
   Future<void> _openCamera() async {
-    final XFile? captured = await Navigator.of(context, rootNavigator: true).push<XFile>(
-      BubbleMorphModalRoute(page: CameraScreen(initialFilter: _cameraFilter)),
-    );
+    final XFile? captured = await Navigator.of(context, rootNavigator: true)
+        .push<XFile>(
+          BubbleMorphModalRoute(
+            page: CameraScreen(initialFilter: _cameraFilter),
+          ),
+        );
     if (captured != null && mounted) {
       await _loadGallery(requestPermission: false);
     }
@@ -219,9 +229,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
     final List<XFile> initialFiles = [];
     if (_selectedAssets.isNotEmpty) {
       try {
-        final files = await Future.wait(
-          _selectedAssets.map((a) => a.file),
-        );
+        final files = await Future.wait(_selectedAssets.map((a) => a.file));
         for (final file in files) {
           if (file != null) {
             initialFiles.add(XFile(file.path));
@@ -273,7 +281,10 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
           });
           _syncSelectionDock();
           if (mounted) {
-            UiHelpers.showSuccess(context, 'Deleted $count photo${count > 1 ? 's' : ''}');
+            UiHelpers.showSuccess(
+              context,
+              'Deleted $count photo${count > 1 ? 's' : ''}',
+            );
           }
         }
       } catch (e) {
@@ -321,10 +332,14 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LiquidGlassTheme.glassGradient(ctx),
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
                   border: Border(
                     top: BorderSide(
-                      color: isDark ? Colors.white.withValues(alpha: 0.18) : Colors.white.withValues(alpha: 0.85),
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.18)
+                          : Colors.white.withValues(alpha: 0.85),
                       width: 1.2,
                     ),
                   ),
@@ -346,7 +361,10 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18.0,
+                          vertical: 8.0,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -363,16 +381,27 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
                               child: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05),
+                                  color: isDark
+                                      ? Colors.white10
+                                      : Colors.black.withValues(alpha: 0.05),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(PhosphorIconsRegular.x, size: 16, color: LiquidGlassTheme.textPrimary(ctx)),
+                                child: Icon(
+                                  PhosphorIconsRegular.x,
+                                  size: 16,
+                                  color: LiquidGlassTheme.textPrimary(ctx),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      Divider(height: 1, color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.05)),
+                      Divider(
+                        height: 1,
+                        color: isDark
+                            ? Colors.white10
+                            : Colors.black.withValues(alpha: 0.05),
+                      ),
                       Flexible(
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -386,22 +415,44 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
                                 final count = countSnap.data ?? 0;
                                 return ListTile(
                                   leading: Icon(
-                                    isSelected ? PhosphorIconsFill.folder : PhosphorIconsRegular.folder,
-                                    color: isSelected ? (isDark ? Colors.white : const Color(0xFF18181B)) : LiquidGlassTheme.textSecondary(ctx),
+                                    isSelected
+                                        ? PhosphorIconsFill.folder
+                                        : PhosphorIconsRegular.folder,
+                                    color: isSelected
+                                        ? (isDark
+                                              ? Colors.white
+                                              : const Color(0xFF18181B))
+                                        : LiquidGlassTheme.textSecondary(ctx),
                                   ),
                                   title: Text(
                                     album.name,
                                     style: TextStyle(
-                                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                      color: isSelected ? (isDark ? Colors.white : const Color(0xFF18181B)) : LiquidGlassTheme.textPrimary(ctx),
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.w500,
+                                      color: isSelected
+                                          ? (isDark
+                                                ? Colors.white
+                                                : const Color(0xFF18181B))
+                                          : LiquidGlassTheme.textPrimary(ctx),
                                     ),
                                   ),
                                   subtitle: Text(
                                     '$count photo${count == 1 ? '' : 's'}',
-                                    style: TextStyle(color: LiquidGlassTheme.textSecondary(ctx)),
+                                    style: TextStyle(
+                                      color: LiquidGlassTheme.textSecondary(
+                                        ctx,
+                                      ),
+                                    ),
                                   ),
                                   trailing: isSelected
-                                      ? Icon(PhosphorIconsFill.checkCircle, color: isDark ? Colors.white : const Color(0xFF18181B), size: 20)
+                                      ? Icon(
+                                          PhosphorIconsFill.checkCircle,
+                                          color: isDark
+                                              ? Colors.white
+                                              : const Color(0xFF18181B),
+                                          size: 20,
+                                        )
                                       : null,
                                   onTap: () {
                                     Navigator.pop(ctx);
@@ -434,9 +485,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
           _buildSubHeaderBar(),
 
           // Photos Grid
-          Expanded(
-            child: _buildGridContent(),
-          ),
+          Expanded(child: _buildGridContent()),
         ],
       ),
     );
@@ -459,7 +508,11 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
       ),
       actions: [
         IconButton(
-          icon: Icon(PhosphorIconsRegular.camera, size: 22, color: LiquidGlassTheme.textPrimary(context)),
+          icon: Icon(
+            PhosphorIconsRegular.camera,
+            size: 22,
+            color: LiquidGlassTheme.textPrimary(context),
+          ),
           tooltip: 'Camera',
           onPressed: _openCamera,
         ),
@@ -469,7 +522,11 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
             height: 36,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             onPressed: _goToPostPage,
-            icon: const Icon(PhosphorIconsRegular.plus, size: 16, color: Colors.white),
+            icon: Icon(
+              PhosphorIconsRegular.plus,
+              size: 16,
+              color: LiquidGlassTheme.textPrimary(context),
+            ),
             label: 'Post',
             isPrimary: true,
           ),
@@ -542,9 +599,16 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.photo_library_outlined, size: 60, color: Colors.grey),
+            const Icon(
+              Icons.photo_library_outlined,
+              size: 60,
+              color: Colors.grey,
+            ),
             const SizedBox(height: 12),
-            const Text('Gallery access required', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Gallery access required',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () => _loadGallery(requestPermission: true),
@@ -558,7 +622,9 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
     // Grid: All gallery assets without camera tile
     return GridView.builder(
       padding: const EdgeInsets.all(2),
-      scrollCacheExtent: const ScrollCacheExtent.viewport(2.0), // Preload images beyond screen bounds
+      scrollCacheExtent: const ScrollCacheExtent.viewport(
+        2.0,
+      ), // Preload images beyond screen bounds
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 2,
@@ -598,8 +664,13 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
           if (isSelected)
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: LiquidGlassTheme.bubbleBlue, width: 2.8),
-                gradient: LiquidGlassTheme.selectionOverlayGradient(opacity: 0.25),
+                border: Border.all(
+                  color: LiquidGlassTheme.bubbleBlue,
+                  width: 2.8,
+                ),
+                gradient: LiquidGlassTheme.selectionOverlayGradient(
+                  opacity: 0.25,
+                ),
               ),
             ),
 
@@ -613,8 +684,12 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
                 height: 24,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: isSelected ? LiquidGlassTheme.bubbleBlueGradient : null,
-                  color: isSelected ? null : Colors.black.withValues(alpha: 0.45),
+                  gradient: isSelected
+                      ? LiquidGlassTheme.bubbleBlueGradient
+                      : null,
+                  color: isSelected
+                      ? null
+                      : Colors.black.withValues(alpha: 0.45),
                   border: Border.all(
                     color: Colors.white,
                     width: isSelected ? 1.0 : 1.5,
@@ -622,7 +697,9 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> with WidgetsBindi
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.18),
+                            color: LiquidGlassTheme.bubbleBlue.withValues(
+                              alpha: 0.18,
+                            ),
                             blurRadius: 4,
                           ),
                         ]
@@ -656,7 +733,8 @@ class _GalleryThumbnailWidget extends StatelessWidget {
       thumbnailFormat: ThumbnailFormat.jpeg,
       fit: BoxFit.cover,
       gaplessPlayback: true,
-      errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[900]),
+      errorBuilder: (context, error, stackTrace) =>
+          Container(color: Colors.grey[900]),
     );
   }
 }

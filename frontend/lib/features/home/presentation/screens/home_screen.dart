@@ -14,7 +14,8 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObserver {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with WidgetsBindingObserver {
   final ViewTrackingService _viewTracker = ViewTrackingService();
 
   @override
@@ -32,7 +33,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
       _viewTracker.flush();
     }
   }
@@ -68,13 +70,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             children: [
               Text(
                 'Could not connect to the server',
-                style: TextStyle(color: LiquidGlassTheme.textSecondary(context)),
+                style: TextStyle(
+                  color: LiquidGlassTheme.textSecondary(context),
+                ),
               ),
               const SizedBox(height: 16),
               LiquidGlassButton(
                 onPressed: () => feedNotifier.refresh(),
                 label: 'Retry',
-                icon: const Icon(PhosphorIconsRegular.arrowClockwise, size: 16, color: Colors.white),
+                icon: Icon(
+                  PhosphorIconsRegular.arrowClockwise,
+                  size: 16,
+                  color: LiquidGlassTheme.textPrimary(context),
+                ),
               ),
             ],
           ),
@@ -85,30 +93,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
             edgeOffset: topInset,
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: SizedBox(height: topInset),
-                ),
+                SliverToBoxAdapter(child: SizedBox(height: topInset)),
                 if (posts.isNotEmpty)
                   SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final post = posts[index];
-                        return PostCard(
-                          key: ValueKey('home_post_${post.id}'),
-                          post: post,
-                          onVisibilityChanged: (fraction) {
-                            _viewTracker.onVisibilityChanged(post.id, fraction);
-                          },
-                        );
-                      },
-                      childCount: posts.length,
-                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final post = posts[index];
+                      return PostCard(
+                        key: ValueKey('home_post_${post.id}'),
+                        post: post,
+                        onVisibilityChanged: (fraction) {
+                          _viewTracker.onVisibilityChanged(post.id, fraction);
+                        },
+                      );
+                    }, childCount: posts.length),
                   ),
 
                 // Anti-Doomscroll Finish Line
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 40.0,
+                      horizontal: 20.0,
+                    ),
                     child: LiquidGlassContainer(
                       padding: const EdgeInsets.all(28),
                       borderRadius: BorderRadius.circular(28),
@@ -119,9 +125,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with WidgetsBindingObse
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                              color: const Color(
+                                0xFF10B981,
+                              ).withValues(alpha: 0.15),
                               border: Border.all(
-                                color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                                color: const Color(
+                                  0xFF10B981,
+                                ).withValues(alpha: 0.35),
                                 width: 1.2,
                               ),
                             ),

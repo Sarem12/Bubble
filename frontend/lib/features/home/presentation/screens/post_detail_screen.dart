@@ -25,6 +25,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
   bool _isLoading = true;
   bool _hasError = false;
   bool _isSubmitting = false;
+  int _detailsRequestId = 0;
   final Set<String> _collapsedIds = {};
   Map<String, dynamic>? _replyingTo;
 
@@ -38,6 +39,16 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
   }
 
   @override
+  void didUpdateWidget(covariant PostDetailScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.postId != widget.postId) {
+      _post = null;
+      _rootNodes = [];
+      _fetchDetails();
+    }
+  }
+
+  @override
   void dispose() {
     _replyController.dispose();
     _focusNode.dispose();
@@ -45,6 +56,8 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
   }
 
   Future<void> _fetchDetails() async {
+    final requestId = ++_detailsRequestId;
+    final postId = widget.postId;
     setState(() {
       _isLoading = true;
       _hasError = false;
@@ -52,13 +65,13 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
     try {
       final postRepo = ref.read(postRepositoryProvider);
       final results = await Future.wait([
-        postRepo.getPostById(widget.postId),
-        postRepo.getComments(widget.postId),
+        postRepo.getPostById(postId),
+        postRepo.getComments(postId),
       ]);
       final post = results[0] as FeedItem;
       final comments = results[1] as List<CommentNode>;
 
-      if (mounted) {
+      if (mounted && requestId == _detailsRequestId) {
         setState(() {
           _post = post;
           _rootNodes = comments;
@@ -67,7 +80,7 @@ class _PostDetailScreenState extends ConsumerState<PostDetailScreen> {
         });
       }
     } catch (e) {
-      if (mounted) {
+      if (mounted && requestId == _detailsRequestId) {
         setState(() {
           _isLoading = false;
           _hasError = true;

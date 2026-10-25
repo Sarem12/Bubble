@@ -23,10 +23,12 @@ class PhotoDetailViewerScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<PhotoDetailViewerScreen> createState() => _PhotoDetailViewerScreenState();
+  ConsumerState<PhotoDetailViewerScreen> createState() =>
+      _PhotoDetailViewerScreenState();
 }
 
-class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScreen> {
+class _PhotoDetailViewerScreenState
+    extends ConsumerState<PhotoDetailViewerScreen> {
   File? _imageFile;
 
   @override
@@ -66,11 +68,12 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
       return;
     }
     if (!mounted) return;
-    final XFile? editedResult = await Navigator.of(context, rootNavigator: true).push<XFile>(
-      BubbleMorphModalRoute(
-        page: PhotoEditorScreen(initialImage: XFile(file.path)),
-      ),
-    );
+    final XFile? editedResult = await Navigator.of(context, rootNavigator: true)
+        .push<XFile>(
+          BubbleMorphModalRoute(
+            page: PhotoEditorScreen(initialImage: XFile(file.path)),
+          ),
+        );
 
     if (editedResult != null && mounted) {
       setState(() {
@@ -184,7 +187,9 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
 
     if (confirmed == true && mounted) {
       try {
-        final deletedIds = await PhotoManager.editor.deleteWithIds([widget.asset.id]);
+        final deletedIds = await PhotoManager.editor.deleteWithIds([
+          widget.asset.id,
+        ]);
         if (deletedIds.isNotEmpty) {
           widget.onModified?.call();
           if (mounted) {
@@ -201,8 +206,18 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
 
   String _formatDate(DateTime dt) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
   }
@@ -237,10 +252,7 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
               child: Hero(
                 tag: 'gallery_asset_${widget.asset.id}',
                 child: _imageFile != null
-                    ? Image.file(
-                        _imageFile!,
-                        fit: BoxFit.contain,
-                      )
+                    ? Image.file(_imageFile!, fit: BoxFit.contain)
                     : AssetEntityImage(
                         widget.asset,
                         isOriginal: false,
@@ -276,35 +288,35 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildActionButton(
-                    icon: PhosphorIconsRegular.magicWand,
-                    label: 'Edit',
-                    onTap: _openEditor,
-                  ),
-                  _buildActionButton(
-                    icon: PhosphorIconsRegular.shareNetwork,
-                    label: 'Share',
-                    onTap: _sharePhoto,
-                  ),
-                  _buildActionButton(
-                    icon: PhosphorIconsFill.paperPlaneTilt,
-                    label: 'Post',
-                    isPrimary: true,
-                    onTap: _postPhoto,
-                  ),
-                  _buildActionButton(
-                    icon: PhosphorIconsRegular.trash,
-                    label: 'Delete',
-                    customColor: Colors.redAccent.shade100,
-                    onTap: _deletePhoto,
-                  ),
-                ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildActionButton(
+                      icon: PhosphorIconsRegular.magicWand,
+                      label: 'Edit',
+                      onTap: _openEditor,
+                    ),
+                    _buildActionButton(
+                      icon: PhosphorIconsRegular.shareNetwork,
+                      label: 'Share',
+                      onTap: _sharePhoto,
+                    ),
+                    _buildActionButton(
+                      icon: PhosphorIconsFill.paperPlaneTilt,
+                      label: 'Post',
+                      isPrimary: true,
+                      onTap: _postPhoto,
+                    ),
+                    _buildActionButton(
+                      icon: PhosphorIconsRegular.trash,
+                      label: 'Delete',
+                      customColor: Colors.redAccent.shade100,
+                      onTap: _deletePhoto,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           ),
         ],
       ),
@@ -323,7 +335,11 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
         height: 38,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         label: label,
-        icon: Icon(icon, size: 16, color: Colors.white),
+        icon: Icon(
+          icon,
+          size: 16,
+          color: LiquidGlassTheme.textPrimary(context),
+        ),
         onPressed: onTap,
       );
     }
@@ -348,7 +364,9 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
               style: TextStyle(
                 color: color,
                 fontSize: 12,
-                fontWeight: customColor != null ? FontWeight.bold : FontWeight.w500,
+                fontWeight: customColor != null
+                    ? FontWeight.bold
+                    : FontWeight.w500,
               ),
             ),
           ],
@@ -357,4 +375,3 @@ class _PhotoDetailViewerScreenState extends ConsumerState<PhotoDetailViewerScree
     );
   }
 }
-

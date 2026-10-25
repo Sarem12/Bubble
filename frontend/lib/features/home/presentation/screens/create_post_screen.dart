@@ -100,13 +100,17 @@ class _SlideUpPhotoCardState extends State<_SlideUpPhotoCard>
       widget.onRemove();
     } else {
       // Spring back down to 0 smoothly
-      _resetAnimation = Tween<double>(begin: _dragOffsetY, end: 0.0).animate(
-        CurvedAnimation(parent: _resetController, curve: Curves.easeOutCubic),
-      )..addListener(() {
-          setState(() {
-            _dragOffsetY = _resetAnimation.value;
+      _resetAnimation =
+          Tween<double>(begin: _dragOffsetY, end: 0.0).animate(
+            CurvedAnimation(
+              parent: _resetController,
+              curve: Curves.easeOutCubic,
+            ),
+          )..addListener(() {
+            setState(() {
+              _dragOffsetY = _resetAnimation.value;
+            });
           });
-        });
       _resetController.forward(from: 0.0);
     }
   }
@@ -167,14 +171,19 @@ class _SlideUpPhotoCardState extends State<_SlideUpPhotoCard>
                           ),
                           if (widget.isSelected)
                             BoxShadow(
-                              color: LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.4),
+                              color: LiquidGlassTheme.bubbleBlue.withValues(
+                                alpha: 0.4,
+                              ),
                               blurRadius: 10,
                             ),
                         ],
                       ),
                       child: kIsWeb
                           ? Image.network(widget.file.path, fit: BoxFit.cover)
-                          : Image.file(File(widget.file.path), fit: BoxFit.cover),
+                          : Image.file(
+                              File(widget.file.path),
+                              fit: BoxFit.cover,
+                            ),
                     ),
 
                     // Top-Left Order Number Badge (①, ②, ③...)
@@ -190,7 +199,9 @@ class _SlideUpPhotoCardState extends State<_SlideUpPhotoCard>
                           border: Border.all(color: Colors.white, width: 1.2),
                           boxShadow: [
                             BoxShadow(
-                              color: LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.18),
+                              color: LiquidGlassTheme.bubbleBlue.withValues(
+                                alpha: 0.18,
+                              ),
                               blurRadius: 4,
                             ),
                           ],
@@ -239,7 +250,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
   List<CameraDescription> _cameras = [];
   CameraController? _cameraController;
   bool _isCameraReady = false;
-  FilterPreset _cameraFilterPreset = ImageFilterMath.presets[0]; // Active camera filter
+  FilterPreset _cameraFilterPreset =
+      ImageFilterMath.presets[0]; // Active camera filter
 
   // Gallery state
   List<AssetEntity> _galleryAssets = [];
@@ -287,10 +299,12 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
 
     while (_editedCacheOrder.length > _maxEditedCacheSize) {
       final oldestKey = _editedCacheOrder.removeAt(0);
-      final isCurrentlySelected = _selectedImages.any((img) =>
-          img.path == oldestKey ||
-          _assetIdBySelectedPath[img.path] == oldestKey ||
-          _originalPathBySelectedPath[img.path] == oldestKey);
+      final isCurrentlySelected = _selectedImages.any(
+        (img) =>
+            img.path == oldestKey ||
+            _assetIdBySelectedPath[img.path] == oldestKey ||
+            _originalPathBySelectedPath[img.path] == oldestKey,
+      );
       if (!isCurrentlySelected) {
         _editedPhotosCache.remove(oldestKey);
       }
@@ -302,7 +316,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
     return _selectedImages.indexWhere((img) {
       if (_assetIdBySelectedPath[img.path] == asset.id) return true;
       if (filePath != null && img.path == filePath) return true;
-      if (filePath != null && _originalPathBySelectedPath[img.path] == filePath) return true;
+      if (filePath != null && _originalPathBySelectedPath[img.path] == filePath)
+        return true;
       return false;
     });
   }
@@ -320,7 +335,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
 
   void _exitReorderMode() {
     if (_heroPageController.hasClients && _selectedImages.isNotEmpty) {
-      _heroPageController.jumpToPage(_currentHeroIndex.clamp(0, _selectedImages.length - 1));
+      _heroPageController.jumpToPage(
+        _currentHeroIndex.clamp(0, _selectedImages.length - 1),
+      );
     }
     _morphController.reverse().then((_) {
       if (mounted) {
@@ -329,7 +346,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
         });
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (_heroPageController.hasClients && _selectedImages.isNotEmpty) {
-            _heroPageController.jumpToPage(_currentHeroIndex.clamp(0, _selectedImages.length - 1));
+            _heroPageController.jumpToPage(
+              _currentHeroIndex.clamp(0, _selectedImages.length - 1),
+            );
           }
         });
       }
@@ -351,7 +370,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
         _isReorderMode = false;
         _morphController.reverse();
       }
-      _currentHeroIndex = _currentHeroIndex.clamp(0, _selectedImages.length - 1);
+      _currentHeroIndex = _currentHeroIndex.clamp(
+        0,
+        _selectedImages.length - 1,
+      );
     });
   }
 
@@ -424,7 +446,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
       } catch (inner) {
         debugPrint('Camera permission retry error: $inner');
       }
-      if (mounted && (_cameraController == null || !_cameraController!.value.isInitialized)) {
+      if (mounted &&
+          (_cameraController == null ||
+              !_cameraController!.value.isInitialized)) {
         setState(() => _isCameraReady = false);
       }
     } finally {
@@ -460,8 +484,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
   }
 
   void _cycleCameraFilter() {
-    final currentIndex =
-        ImageFilterMath.presets.indexWhere((p) => p.id == _cameraFilterPreset.id);
+    final currentIndex = ImageFilterMath.presets.indexWhere(
+      (p) => p.id == _cameraFilterPreset.id,
+    );
     final nextIndex = (currentIndex + 1) % ImageFilterMath.presets.length;
     setState(() {
       _cameraFilterPreset = ImageFilterMath.presets[nextIndex];
@@ -472,8 +497,12 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
     if (_selectedImages.isEmpty) return;
     final int targetIndex;
     if (imageToEdit != null) {
-      final idx = _selectedImages.indexWhere((img) => img.path == imageToEdit.path);
-      targetIndex = idx >= 0 ? idx : _currentHeroIndex.clamp(0, _selectedImages.length - 1);
+      final idx = _selectedImages.indexWhere(
+        (img) => img.path == imageToEdit.path,
+      );
+      targetIndex = idx >= 0
+          ? idx
+          : _currentHeroIndex.clamp(0, _selectedImages.length - 1);
     } else {
       targetIndex = _currentHeroIndex.clamp(0, _selectedImages.length - 1);
     }
@@ -481,15 +510,14 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
 
     final XFile? editedResult = await Navigator.push<XFile>(
       context,
-      BubbleMorphModalRoute(
-        page: PhotoEditorScreen(initialImage: target),
-      ),
+      BubbleMorphModalRoute(page: PhotoEditorScreen(initialImage: target)),
     );
 
     if (editedResult != null && mounted) {
       setState(() {
         final assetId = _assetIdBySelectedPath[target.path];
-        final origPath = _originalPathBySelectedPath[target.path] ?? target.path;
+        final origPath =
+            _originalPathBySelectedPath[target.path] ?? target.path;
 
         _selectedImages[targetIndex] = editedResult;
 
@@ -514,7 +542,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
 
     if (capturedPhoto != null && mounted) {
       if (_selectedImages.length >= _maxPhotos) {
-        UiHelpers.showError(context, 'You can select up to $_maxPhotos photos.');
+        UiHelpers.showError(
+          context,
+          'You can select up to $_maxPhotos photos.',
+        );
         return;
       }
       setState(() {
@@ -531,7 +562,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
     }
   }
 
-  Future<void> _loadDeviceGallery({bool requestPermissionIfNotGranted = false}) async {
+  Future<void> _loadDeviceGallery({
+    bool requestPermissionIfNotGranted = false,
+  }) async {
     setState(() => _isLoadingGallery = true);
     try {
       // Check permission state silently first (does not launch system gallery/dialog)
@@ -545,18 +578,24 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
       );
 
       PermissionState ps = currentPs;
-      if (!currentPs.isAuth && !currentPs.hasAccess && requestPermissionIfNotGranted) {
+      if (!currentPs.isAuth &&
+          !currentPs.hasAccess &&
+          requestPermissionIfNotGranted) {
         ps = await PhotoManager.requestPermissionExtend();
       }
 
       if (ps.isAuth || ps.hasAccess) {
         _hasGalleryPermission = true;
-        final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
-          onlyAll: true,
-          type: RequestType.image,
-        );
+        final List<AssetPathEntity> albums =
+            await PhotoManager.getAssetPathList(
+              onlyAll: true,
+              type: RequestType.image,
+            );
         if (albums.isNotEmpty) {
-          final List<AssetEntity> media = await albums[0].getAssetListPaged(page: 0, size: 80);
+          final List<AssetEntity> media = await albums[0].getAssetListPaged(
+            page: 0,
+            size: 80,
+          );
           if (mounted) {
             setState(() {
               _galleryAssets = media;
@@ -586,7 +625,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
         _assetIdBySelectedPath.remove(removed.path);
         _originalPathBySelectedPath.remove(removed.path);
         if (_selectedImages.isNotEmpty) {
-          _currentHeroIndex = _currentHeroIndex.clamp(0, _selectedImages.length - 1);
+          _currentHeroIndex = _currentHeroIndex.clamp(
+            0,
+            _selectedImages.length - 1,
+          );
           if (_heroPageController.hasClients) {
             _heroPageController.jumpToPage(_currentHeroIndex);
           }
@@ -712,22 +754,22 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
       for (int i = 0; i < _selectedImages.length; i++) {
         if (!mounted) return;
         setState(() {
-          _uploadStatus = 'Uploading photo ${i + 1} of ${_selectedImages.length}...';
+          _uploadStatus =
+              'Uploading photo ${i + 1} of ${_selectedImages.length}...';
         });
 
         final image = _selectedImages[i];
         final url = await dataSource.uploadMedia(image.path);
-        uploadedMedia.add({
-          'media_type': 'IMAGE',
-          'url': url,
-        });
+        uploadedMedia.add({'media_type': 'IMAGE', 'url': url});
       }
 
       if (!mounted) return;
       setState(() => _uploadStatus = 'Publishing post...');
 
       final content = _contentController.text.trim();
-      final bubbleIds = _selectedBubbleId != null ? [_selectedBubbleId!] : <String>[];
+      final bubbleIds = _selectedBubbleId != null
+          ? [_selectedBubbleId!]
+          : <String>[];
 
       await dataSource.createPost(
         content: content,
@@ -745,7 +787,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        UiHelpers.showError(context, e.toString().replaceAll('Exception: ', ''));
+        UiHelpers.showError(
+          context,
+          e.toString().replaceAll('Exception: ', ''),
+        );
       }
     }
   }
@@ -833,9 +878,7 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   SafeHaptics.mediumImpact();
                   _exitReorderMode();
                 },
-                child: Container(
-                  color: Colors.black.withValues(alpha: 0.95),
-                ),
+                child: Container(color: Colors.black.withValues(alpha: 0.95)),
               ),
             ),
 
@@ -856,7 +899,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                           color: Colors.white.withValues(alpha: 0.12),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.swap_horiz_rounded, color: Colors.white, size: 15),
+                        child: const Icon(
+                          Icons.swap_horiz_rounded,
+                          color: Colors.white,
+                          size: 15,
+                        ),
                       ),
                       const SizedBox(width: 8),
                       const Text(
@@ -873,7 +920,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   GestureDetector(
                     onTap: _exitReorderMode,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(18),
@@ -1001,7 +1051,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.photo_library_outlined, size: 60, color: Colors.white38),
+                Icon(
+                  Icons.photo_library_outlined,
+                  size: 60,
+                  color: Colors.white38,
+                ),
                 SizedBox(height: 10),
                 Text(
                   'Select a photo from below',
@@ -1028,7 +1082,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             child: GestureDetector(
               onTap: _enterReorderMode,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(14),
@@ -1037,7 +1094,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.swap_horiz_rounded, color: Colors.white70, size: 14),
+                    const Icon(
+                      Icons.swap_horiz_rounded,
+                      color: Colors.white70,
+                      size: 14,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       '${_currentHeroIndex + 1}/${_selectedImages.length}',
@@ -1064,7 +1125,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
               child: GestureDetector(
                 onTap: _enterReorderMode,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
@@ -1097,7 +1161,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  _previewFit = _previewFit == BoxFit.cover ? BoxFit.contain : BoxFit.cover;
+                  _previewFit = _previewFit == BoxFit.cover
+                      ? BoxFit.contain
+                      : BoxFit.cover;
                 });
               },
               child: Container(
@@ -1107,7 +1173,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  _previewFit == BoxFit.cover ? Icons.unfold_more : Icons.unfold_less,
+                  _previewFit == BoxFit.cover
+                      ? Icons.unfold_more
+                      : Icons.unfold_less,
                   color: Colors.white,
                   size: 18,
                 ),
@@ -1123,7 +1191,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             child: GestureDetector(
               onTap: () => _openPhotoEditor(),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(20),
@@ -1132,7 +1203,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.auto_fix_high_rounded, color: Colors.white, size: 14),
+                    Icon(
+                      Icons.auto_fix_high_rounded,
+                      color: Colors.white,
+                      size: 14,
+                    ),
                     SizedBox(width: 5),
                     Text(
                       'EDIT',
@@ -1215,7 +1290,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             thumbnailFormat: ThumbnailFormat.jpeg,
             fit: BoxFit.cover,
             gaplessPlayback: true,
-            errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[850]),
+            errorBuilder: (context, error, stackTrace) =>
+                Container(color: Colors.grey[850]),
           ),
 
           // Focused overlay with iridescent bubble tint
@@ -1239,14 +1315,18 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
               width: 22,
               height: 22,
               decoration: BoxDecoration(
-                gradient: isSelected ? LiquidGlassTheme.bubbleBlueGradient : null,
+                gradient: isSelected
+                    ? LiquidGlassTheme.bubbleBlueGradient
+                    : null,
                 color: isSelected ? null : Colors.black.withValues(alpha: 0.35),
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 1.5),
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: LiquidGlassTheme.bubbleBlue.withValues(alpha: 0.18),
+                          color: LiquidGlassTheme.bubbleBlue.withValues(
+                            alpha: 0.18,
+                          ),
                           blurRadius: 4,
                         ),
                       ]
@@ -1276,10 +1356,14 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
     final previewSize = _cameraController?.value.previewSize;
     // Mobile camera sensors report previewSize in landscape (width > height)
     final double previewW = previewSize != null
-        ? (previewSize.width > previewSize.height ? previewSize.height : previewSize.width)
+        ? (previewSize.width > previewSize.height
+              ? previewSize.height
+              : previewSize.width)
         : width;
     final double previewH = previewSize != null
-        ? (previewSize.width > previewSize.height ? previewSize.width : previewSize.height)
+        ? (previewSize.width > previewSize.height
+              ? previewSize.width
+              : previewSize.height)
         : height;
 
     return GestureDetector(
@@ -1312,7 +1396,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   child: SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white54),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white54,
+                    ),
                   ),
                 )
               else
@@ -1320,7 +1407,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.camera_alt_rounded, color: Colors.white54, size: 28),
+                      Icon(
+                        Icons.camera_alt_rounded,
+                        color: Colors.white54,
+                        size: 28,
+                      ),
                       SizedBox(height: 4),
                       Text(
                         'Tap to start',
@@ -1333,16 +1424,17 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
               // Instagram subtle center camera icon overlay (when live)
               if (_isCameraReady)
                 Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.35),
-                      shape: BoxShape.circle,
-                    ),
+                  child: LiquidGlassContainer(
+                    width: 42,
+                    height: 42,
+                    borderRadius: BorderRadius.circular(24),
+                    blur: 14,
+                    hasBlur: true,
+                    padding: const EdgeInsets.all(9),
                     child: const Icon(
                       Icons.camera_alt_rounded,
                       color: Colors.white,
-                      size: 22,
+                      size: 20,
                     ),
                   ),
                 ),
@@ -1351,43 +1443,48 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
               Positioned(
                 top: 6,
                 right: 6,
-                child: GestureDetector(
+                child: LiquidGlassContainer(
+                  borderRadius: BorderRadius.circular(18),
+                  blur: 14,
+                  hasBlur: true,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 5,
+                  ),
+                  border: Border.all(
+                    color: _cameraFilterPreset.id != 'normal'
+                        ? Colors.white.withValues(alpha: 0.55)
+                        : Colors.white.withValues(alpha: 0.18),
+                  ),
                   onTap: _cycleCameraFilter,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.75),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: _cameraFilterPreset.id != 'normal'
-                            ? Colors.white.withValues(alpha: 0.6)
-                            : Colors.white24,
-                        width: 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _cameraFilterPreset.icon,
+                        size: 11,
+                        color: Colors.white,
                       ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _cameraFilterPreset.icon,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 3),
-                        Flexible(
-                          child: Text(
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
                           _cameraFilterPreset.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 9,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 3),
+                      const Icon(
+                        Icons.expand_more_rounded,
+                        size: 12,
+                        color: Colors.white70,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -1406,8 +1503,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
         final double totalWidth = constraints.maxWidth;
         // 3-column system so column width matches between camera and photo columns
         final double columnWidth = (totalWidth - (spacing * 2)) / 3.0;
-        final double cameraHeight = columnWidth * (16.0 / 9.0); // 9:16 phone ratio
-        final double photoHeight = (cameraHeight - spacing) / 2.0; // half of camera tile height
+        final double cameraHeight =
+            columnWidth * (16.0 / 9.0); // 9:16 phone ratio
+        final double photoHeight =
+            (cameraHeight - spacing) / 2.0; // half of camera tile height
 
         // First 4 gallery photos go beside the camera in Columns 2 & 3
         final firstBatch = _galleryAssets.take(4).toList();
@@ -1488,26 +1587,42 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
             // If user hasn't granted gallery permission yet and gallery is empty
             if (!_hasGalleryPermission && _galleryAssets.isEmpty)
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 24,
+                ),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.withValues(alpha: 0.15)),
+                  border: Border.all(
+                    color: Colors.grey.withValues(alpha: 0.15),
+                  ),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.photo_library_outlined, size: 38, color: Theme.of(context).colorScheme.primary),
+                    Icon(
+                      Icons.photo_library_outlined,
+                      size: 38,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       'Access Device Photos',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: LiquidGlassTheme.textPrimary(context)),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: LiquidGlassTheme.textPrimary(context),
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Allow photo access to choose and upload images directly from your gallery.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: LiquidGlassTheme.textSecondary(context), fontSize: 13),
+                      style: TextStyle(
+                        color: LiquidGlassTheme.textSecondary(context),
+                        fontSize: 13,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Wrap(
@@ -1516,23 +1631,45 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                       runSpacing: 8,
                       children: [
                         ElevatedButton.icon(
-                          onPressed: () => _loadDeviceGallery(requestPermissionIfNotGranted: true),
-                          icon: const Icon(Icons.check_circle_outline_rounded, size: 18),
+                          onPressed: () => _loadDeviceGallery(
+                            requestPermissionIfNotGranted: true,
+                          ),
+                          icon: const Icon(
+                            Icons.check_circle_outline_rounded,
+                            size: 18,
+                          ),
                           label: const Text('Allow Access'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: LiquidGlassTheme.primaryTextColor(context),
-                            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            foregroundColor: LiquidGlassTheme.primaryTextColor(
+                              context,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                         OutlinedButton.icon(
                           onPressed: _pickFromSystemPicker,
-                          icon: const Icon(Icons.folder_open_outlined, size: 18),
+                          icon: const Icon(
+                            Icons.folder_open_outlined,
+                            size: 18,
+                          ),
                           label: const Text('Browse'),
                           style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ],
@@ -1553,7 +1690,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   childAspectRatio: columnWidth / photoHeight,
                 ),
                 itemCount: remainingAssets.length,
-                itemBuilder: (context, index) => _buildGalleryTile(remainingAssets[index]),
+                itemBuilder: (context, index) =>
+                    _buildGalleryTile(remainingAssets[index]),
               ),
           ],
         );
@@ -1658,8 +1796,14 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                                 fit: StackFit.expand,
                                 children: [
                                   kIsWeb
-                                      ? Image.network(_selectedImages[0].path, fit: BoxFit.cover)
-                                      : Image.file(File(_selectedImages[0].path), fit: BoxFit.cover),
+                                      ? Image.network(
+                                          _selectedImages[0].path,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.file(
+                                          File(_selectedImages[0].path),
+                                          fit: BoxFit.cover,
+                                        ),
                                   // Edit icon overlay in top-left
                                   Positioned(
                                     top: 3,
@@ -1667,10 +1811,16 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                                     child: Container(
                                       padding: const EdgeInsets.all(2),
                                       decoration: BoxDecoration(
-                                        color: Colors.black.withValues(alpha: 0.6),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.6,
+                                        ),
                                         shape: BoxShape.circle,
                                       ),
-                                      child: const Icon(Icons.edit_rounded, color: Colors.white, size: 10),
+                                      child: const Icon(
+                                        Icons.edit_rounded,
+                                        color: Colors.white,
+                                        size: 10,
+                                      ),
                                     ),
                                   ),
                                   if (_selectedImages.length > 1)
@@ -1678,15 +1828,26 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                                       bottom: 3,
                                       right: 3,
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                          vertical: 2,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: Colors.black.withValues(alpha: 0.75),
-                                          borderRadius: BorderRadius.circular(4),
+                                          color: Colors.black.withValues(
+                                            alpha: 0.75,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
                                         ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const Icon(Icons.copy_rounded, color: Colors.white, size: 10),
+                                            const Icon(
+                                              Icons.copy_rounded,
+                                              color: Colors.white,
+                                              size: 10,
+                                            ),
                                             const SizedBox(width: 2),
                                             Text(
                                               '${_selectedImages.length}',
@@ -1731,7 +1892,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   leading: UserAvatar(imageUrl: profilePic, radius: 16),
                   title: Text(
                     'Sharing as $username',
-                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
                   ),
                   subtitle: _userBubbles.isNotEmpty
                       ? DropdownButtonHideUnderline(
@@ -1741,87 +1905,114 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                             items: [
                               DropdownMenuItem<String?>(
                                 value: null,
-                                child: Text('Personal Profile',
-                                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                                child: Text(
+                                  'Personal Profile',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
-                              ..._userBubbles.map((b) => DropdownMenuItem<String?>(
-                                    value: b['id']?.toString(),
-                                    child: Text(
-                                      'Bubble: ${b['name']}',
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                  )),
+                              ..._userBubbles.map(
+                                (b) => DropdownMenuItem<String?>(
+                                  value: b['id']?.toString(),
+                                  child: Text(
+                                    'Bubble: ${b['name']}',
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                              ),
                             ],
                             onChanged: _isLoading
                                 ? null
-                                : (val) => setState(() => _selectedBubbleId = val),
+                                : (val) =>
+                                      setState(() => _selectedBubbleId = val),
                           ),
                         )
-                      : const Text('Posting to Personal Profile', style: TextStyle(fontSize: 12)),
+                      : const Text(
+                          'Posting to Personal Profile',
+                          style: TextStyle(fontSize: 12),
+                        ),
                 ),
 
                 const Divider(height: 1),
 
                 // 3. Photo Carousel strip overview
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: Text(
-                        '${_selectedImages.length} Photo${_selectedImages.length == 1 ? '' : 's'} Selected',
+                          '${_selectedImages.length} Photo${_selectedImages.length == 1 ? '' : 's'} Selected',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 8),
                       Flexible(
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (_selectedImages.length > 1) ...[
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _currentStep = 0;
-                                  _isReorderMode = true;
-                                });
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.swap_horiz_rounded, size: 16, color: Theme.of(context).colorScheme.primary),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Reorder',
-                                    style: TextStyle(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                    ),
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_selectedImages.length > 1) ...[
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentStep = 0;
+                                      _isReorderMode = true;
+                                    });
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.swap_horiz_rounded,
+                                        size: 16,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'Reorder',
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
+                                const SizedBox(width: 16),
+                              ],
+                              GestureDetector(
+                                onTap: () => setState(() => _currentStep = 0),
+                                child: Text(
+                                  'Edit Selection',
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                          ],
-                          GestureDetector(
-                            onTap: () => setState(() => _currentStep = 0),
-                            child: Text(
-                              'Edit Selection',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
                         ),
                       ),
                     ],
@@ -1834,7 +2025,8 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
                     itemCount: _selectedImages.length,
-                    separatorBuilder: (context, index) => const SizedBox(width: 8),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8),
                     itemBuilder: (context, index) {
                       final img = _selectedImages[index];
                       return GestureDetector(
@@ -1874,7 +2066,11 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                   child: LiquidGlassButton(
                     height: 50,
                     label: 'Share Post',
-                    icon: const Icon(PhosphorIconsFill.paperPlaneTilt, size: 18, color: Colors.white),
+                    icon: Icon(
+                      PhosphorIconsFill.paperPlaneTilt,
+                      size: 18,
+                      color: LiquidGlassTheme.textPrimary(context),
+                    ),
                     isLoading: _isLoading,
                     onPressed: _isLoading ? null : _handlePublish,
                   ),
@@ -1892,7 +2088,9 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                 child: Center(
                   child: Card(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
@@ -1903,7 +2101,10 @@ class _CreatePostScreenState extends ConsumerState<CreatePostScreen>
                           Text(
                             _uploadStatus,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
                           ),
                           const SizedBox(height: 6),
                           const Text(
